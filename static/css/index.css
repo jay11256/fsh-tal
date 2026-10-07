@@ -33,6 +33,10 @@ body {
   font-family: 'Google Sans', sans-serif;
 }
 
+.teaser .title {
+  font-family: 'Noto Sans', sans-serif;
+}
+
 .publication-title {
     font-family: 'Google Sans', sans-serif;
 }
@@ -141,9 +145,9 @@ body {
 }
 
 .clip-grid-colhead {
-  font-size: 12px;
-  font-weight: 600;
-  color: #6b7280;
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
   text-align: center;
   padding-bottom: 2px;
 }

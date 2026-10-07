@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FSH-TAL</title>
 
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans:400,700|Castoro"
         rel="stylesheet">
 
   <link rel="stylesheet" href="./static/css/bulma.min.css">
@@ -142,27 +142,6 @@
   </div>
 </section>
 
-<section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <h2 class="title is-2" style="text-align: center; padding-bottom: 10px;">Method</h2>
-      <div align="center">
-        <img src="./static/images/architecture.png" alt="FSH-TAL architecture" width="100%">
-      </div>
-      <br>
-      <h2 class="subtitle">
-        <strong>FSH-TAL</strong> has three stages.<br><strong>(A)</strong> SAM3 segments both fish
-        from the text prompt &ldquo;fish&rdquo; and we track 18 points per clip across the
-        predicted masks.<br><strong>(B)</strong> A few-shot MIL classifier, built on Trokens, fuses
-        DINOv2 features with the tracked trajectories, trained in 5-way 3-shot episodes so
-        co-occurring behaviors share a clip.<br><strong>(C)</strong> FSH-TAL trains a temporal
-        transformer on the frozen MIL embeddings at 4&nbsp;FPS, predicting behavior, timespan, and
-        centerness, decoded with greedy NMS per behavior.
-      </h2>
-    </div>
-  </div>
-</section>
-
 <section class="section body">
   <div class="container">
     <div class="columns is-centered">
@@ -227,6 +206,27 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <h2 class="title is-2" style="text-align: center; padding-bottom: 10px;">Method</h2>
+      <div align="center">
+        <img src="./static/images/architecture.png" alt="FSH-TAL architecture" width="100%">
+      </div>
+      <br>
+      <h2 class="subtitle">
+        <strong>FSH-TAL</strong> has three stages.<br><strong>(A)</strong> SAM3 segments both fish
+        from the text prompt &ldquo;fish&rdquo; and we track 18 points per clip across the
+        predicted masks.<br><strong>(B)</strong> A few-shot MIL classifier, built on Trokens, fuses
+        DINOv2 features with the tracked trajectories, trained in 5-way 3-shot episodes so
+        co-occurring behaviors share a clip.<br><strong>(C)</strong> FSH-TAL trains a temporal
+        transformer on the frozen MIL embeddings at 4&nbsp;FPS, predicting behavior, timespan, and
+        centerness, decoded with greedy NMS per behavior.
+      </h2>
     </div>
   </div>
 </section>
