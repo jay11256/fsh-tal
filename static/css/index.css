@@ -114,10 +114,14 @@ body {
 
 .clip-grid {
   display: grid;
-  grid-template-columns: max-content repeat(7, 1fr);
+  grid-template-columns: max-content repeat(3, 1fr);
   gap: 4px;
   align-items: center;
-  min-width: 760px;
+  min-width: 480px;
+}
+
+.clip-grid + .clip-grid {
+  margin-top: 1.25rem;
 }
 
 .clip-grid img {
