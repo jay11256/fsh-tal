@@ -118,8 +118,10 @@ body {
 
 .clip-grid {
   display: grid;
-  grid-template-columns: max-content repeat(3, 1fr);
+  /* fixed label column, mirrored by right padding so the middle column sits centered */
+  grid-template-columns: 26px repeat(3, 1fr);
   gap: 4px;
+  padding-right: 30px;
   align-items: center;
   min-width: 480px;
 }
@@ -139,9 +141,13 @@ body {
   font-size: 13px;
   font-weight: 600;
   color: #374151;
-  padding-right: 10px;
-  text-align: right;
+  /* rotated 180deg, so left padding ends up on the image side */
+  padding-left: 6px;
+  text-align: center;
   white-space: nowrap;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  justify-self: center;
 }
 
 .clip-grid-colhead {
