@@ -1,27 +1,21 @@
-/* Palette taken from the tank: cool aquarium glass, deep water, and the
-   yellow of a male A. burtoni. The page background crossfades between
-   "glass" and "deep" as sections scroll past (see static/js/page.js). */
+/* Apple-style full-screen slides. Each <section class="slide"> is one screen and
+   one scroll-snap point; its content is a 40/60 split of text and media. */
+
 :root {
-  --glass: #EEF3F1;
-  --ink: #17302E;
-  --deep: #0E3634;
-  --yellow: #F2C230;
-  --silt: #5F716C;
+  --white: #fff;
+  --gray: #f5f5f7;
+  --black: #000;
+  --text: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --blue: #0071e3;
+  --link: #0066cc;
+  --link-dark: #2997ff;
 
-  --fg: var(--ink);
-  --fg-muted: var(--silt);
-  --rule: rgba(23, 48, 46, 0.16);
-  --link: #1B6B64;
+  --nav-h: 48px;
+  --ease: cubic-bezier(0.28, 0.11, 0.32, 1);
 
-  --wide: 1080px;
-  --prose: 40rem;
-}
-
-body[data-tone="deep"] {
-  --fg: #E6EFEC;
-  --fg-muted: #9DB5B0;
-  --rule: rgba(230, 239, 236, 0.18);
-  --link: var(--yellow);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 *,
@@ -31,328 +25,447 @@ body[data-tone="deep"] {
 }
 
 html {
-  -webkit-text-size-adjust: 100%;
+  scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Desktop with mouse/trackpad: page.js drives every slide change itself
+   (wheel, keys, links), so native scrolling and snapping are turned off. */
+html.is-paged {
+  overflow: hidden;
+  scroll-snap-type: none;
+  scroll-behavior: auto;
 }
 
 body {
   margin: 0;
-  background: var(--glass);
-  color: var(--fg);
-  font-family: 'Schibsted Grotesk', system-ui, sans-serif;
-  font-size: 18px;
-  line-height: 1.6;
-  transition: background-color 0.7s ease, color 0.7s ease;
-}
-
-body[data-tone="deep"] {
-  background: var(--deep);
+  background: var(--black);
+  color: var(--text);
+  font-size: 17px;
+  line-height: 1.47;
+  letter-spacing: -0.022em;
 }
 
 img {
-  max-width: 100%;
   display: block;
+  max-width: 100%;
 }
 
 a {
   color: var(--link);
-  text-underline-offset: 0.18em;
-}
-
-:focus-visible {
-  outline: 3px solid var(--yellow);
-  outline-offset: 3px;
-}
-
-h2 {
-  margin: 0 0 1.5rem;
-  font-size: clamp(2.2rem, 5vw, 3.6rem);
-  font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-  text-align: center;
-}
-
-/* ---------- Hero ---------- */
-
-.hero {
-  max-width: var(--wide);
-  margin: 0 auto;
-  padding: clamp(4rem, 12vh, 8rem) 1.5rem 4rem;
-  text-align: center;
-}
-
-.hero-title {
-  margin: 0 auto 2rem;
-  max-width: 16em;
-  font-size: clamp(2.3rem, 5.6vw, 4.4rem);
-  font-weight: 800;
-  line-height: 1.02;
-  letter-spacing: -0.035em;
-  text-wrap: balance;
-}
-
-.authors {
-  margin: 0 auto 0.75rem;
-  max-width: 52rem;
-  font-size: 1.05rem;
-  line-height: 1.7;
-}
-
-.authors span {
-  display: inline-block;
-  margin: 0 0.45em;
-}
-
-.authors a {
   text-decoration: none;
 }
 
-.authors a:hover {
+a:hover {
   text-decoration: underline;
 }
 
-.affiliations {
-  margin: 0 auto 2rem;
-  color: var(--fg-muted);
-  font-size: 0.9rem;
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
 }
 
-.affiliations span {
-  display: inline-block;
-  margin: 0 0.75em;
+/* ---------- Global nav: translucent bar that follows the active slide's theme ---------- */
+
+.globalnav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 10;
+  height: var(--nav-h);
+  background: rgba(255, 255, 255, 0.72);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  transition: background-color 0.5s var(--ease), border-color 0.5s var(--ease);
 }
 
-.links {
+.globalnav-inner {
+  max-width: 1280px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 48px);
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.6rem;
-}
-
-.pill {
-  display: inline-flex;
   align-items: center;
-  gap: 0.5em;
-  padding: 0.6em 1.3em;
-  border-radius: 999px;
-  background: var(--ink);
-  color: var(--glass);
-  font-weight: 500;
+  gap: 24px;
+}
+
+.globalnav-brand {
+  color: var(--text);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.globalnav-brand:hover {
   text-decoration: none;
-  transition: background-color 0.2s ease;
 }
 
-.pill:hover {
-  background: var(--deep);
-  color: var(--yellow);
+.globalnav-links {
+  display: flex;
+  gap: clamp(16px, 2.4vw, 32px);
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
 }
 
-.venue {
-  margin: 2.5rem auto 0;
-  mix-blend-mode: multiply;
+.globalnav-links a {
+  color: var(--text);
+  font-size: 12px;
+  letter-spacing: -0.01em;
+  opacity: 0.8;
+  transition: opacity 0.2s;
 }
 
-/* ---------- Statement: TL;DR pinned while its words light up ---------- */
-
-.statement {
-  height: 220vh;
-  padding: 0 1.5rem;
+.globalnav-links a:hover,
+.globalnav-links a[aria-current="true"] {
+  opacity: 1;
+  text-decoration: none;
 }
 
-.statement-stage {
-  position: sticky;
-  top: 0;
+.globalnav-links a[aria-current="true"] {
+  font-weight: 600;
+}
+
+.globalnav[data-theme="dark"] {
+  background: rgba(22, 22, 23, 0.8);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.globalnav[data-theme="dark"] .globalnav-brand,
+.globalnav[data-theme="dark"] .globalnav-links a {
+  color: #f5f5f7;
+}
+
+/* ---------- Slides ---------- */
+
+.slide {
+  position: relative;
   height: 100vh;
   height: 100svh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
   display: flex;
   align-items: center;
+  overflow: hidden;
+  padding: calc(var(--nav-h) + 3vh) clamp(24px, 5vw, 80px) 4vh;
+}
+
+.theme-light { background: var(--white); color: var(--text); }
+.theme-gray  { background: var(--gray);  color: var(--text); }
+.theme-dark  { background: var(--black); color: #f5f5f7; --text-secondary: #86868b; --link: var(--link-dark); }
+
+.slide-inner {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 4fr 6fr;
+  align-items: center;
+  gap: clamp(32px, 5vw, 80px);
+}
+
+/* let wide children (the results table) scroll instead of stretching the column */
+.slide-inner > * {
+  min-width: 0;
+}
+
+.copy {
+  max-width: 34rem;
+}
+
+.media {
+  margin: 0;
+  display: flex;
   justify-content: center;
 }
 
-.statement-text {
-  max-width: 17em;
-  margin: 0;
-  font-size: clamp(2rem, 5.4vw, 4.2rem);
-  font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -0.035em;
-  text-wrap: balance;
+/* Clips and the teaser: large, rounded, edge to edge within the column. */
+.media img,
+.teaser-frame {
+  width: 100%;
+  max-height: calc(100svh - var(--nav-h) - 12vh);
+  object-fit: contain;
+  border-radius: 28px;
 }
 
-/* ---------- Scroll-linked motion (values written by static/js/page.js) ---------- */
-
-[data-scroll="rise"],
-[data-scroll="zoom"],
-[data-scroll="exit"] {
-  will-change: transform, opacity;
-}
-
-/* ---------- Content blocks ---------- */
-
-.block {
-  padding: clamp(5rem, 14vh, 9rem) 1.5rem;
-}
-
-.wide {
-  max-width: var(--wide);
-  margin: 0 auto;
-}
-
-.prose {
-  max-width: var(--prose);
-  margin: 0 auto;
-}
-
-.prose p {
-  margin: 0;
-  font-size: 1.2rem;
-  line-height: 1.65;
-}
-
-.lede {
-  max-width: var(--prose);
-  margin: 0 auto 3rem;
-  color: var(--fg-muted);
-  font-size: 1.2rem;
-  text-align: center;
-  text-wrap: pretty;
-}
-
-.lede strong {
-  color: var(--fg);
+/* Figures with white backgrounds sit flat on light slides. */
+.media-plain img {
+  border-radius: 0;
 }
 
 .teaser-frame {
-  display: block;
-  width: 100%;
   aspect-ratio: 16 / 10;
   border: 0;
-  border-radius: 18px;
-  background: #fff;
+  background: var(--white);
 }
 
-.figure {
-  margin: 0 auto;
-  border-radius: 18px;
-  background: #fff;
+/* ---------- Type ---------- */
+
+h1,
+h2 {
+  margin: 0 0 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
 }
 
-/* ---------- Dataset ---------- */
-
-.clip-grid-wrap {
-  overflow-x: auto;
+h1 {
+  font-size: clamp(28px, 3.1vw, 48px);
+  line-height: 1.08;
 }
 
-.clip-grid {
-  display: grid;
-  /* fixed label column, mirrored by right padding so the middle column sits centered */
-  grid-template-columns: 26px repeat(3, 1fr);
-  gap: 6px;
-  padding-right: 30px;
-  align-items: center;
-  min-width: 480px;
+h2 {
+  font-size: clamp(32px, 4vw, 56px);
+  line-height: 1.07;
 }
 
-.clip-grid + .clip-grid {
-  margin-top: 2rem;
+#overview h2 {
+  font-size: clamp(30px, 3.4vw, 48px);
+  line-height: 1.1;
 }
 
-.clip-grid img {
-  width: 100%;
-  height: auto;
-  border-radius: 6px;
-}
-
-.clip-grid-label {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--fg-muted);
-  /* rotated 180deg, so left padding ends up on the image side */
-  padding-left: 6px;
-  text-align: center;
-  white-space: nowrap;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  justify-self: center;
-}
-
-.clip-grid-colhead {
+.headline-number {
+  font-size: clamp(56px, 7.5vw, 96px);
   font-weight: 700;
-  text-align: center;
-  padding-bottom: 4px;
+  letter-spacing: -0.03em;
 }
 
-.plot-panel {
-  margin: 3rem auto 0;
-  padding: clamp(1rem, 3vw, 2rem);
-  max-width: 720px;
-  border-radius: 18px;
-  background: #fff;
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--text-secondary);
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: 0.011em;
 }
 
-.plot-panel img {
-  width: 82%;
-  margin: 0 auto;
-  transform: translateX(-7.9%);
+.body-text {
+  margin: 0 0 20px;
+  color: var(--text-secondary);
+  font-size: clamp(16px, 1.3vw, 19px);
+  line-height: 1.5;
 }
 
-/* ---------- Method ---------- */
+.theme-light .body-text strong,
+.theme-gray .body-text strong {
+  color: var(--text);
+}
+
+.authors {
+  margin: 0 0 12px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.authors sup,
+.fineprint sup {
+  font-size: 0.65em;
+}
+
+.fineprint {
+  margin: 0 0 24px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.credits {
+  margin: 40px 0 0;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.venue {
+  margin-top: 28px;
+}
+
+/* ---------- Buttons ---------- */
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 22px;
+  border: 1px solid var(--blue);
+  border-radius: 980px;
+  background: var(--blue);
+  color: #fff;
+  font: inherit;
+  font-size: 17px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.button:hover {
+  background: #0077ed;
+  text-decoration: none;
+}
+
+.button-secondary {
+  background: transparent;
+  color: var(--blue);
+}
+
+.button-secondary:hover {
+  background: var(--blue);
+  color: #fff;
+}
+
+.button-small {
+  min-height: 28px;
+  padding: 0 14px;
+  font-size: 12px;
+}
+
+/* ---------- Dataset stats ---------- */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: start;
+  gap: 32px;
+  margin: 28px 0 0;
+}
+
+.stats dt {
+  font-size: clamp(28px, 2.8vw, 40px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.stats dd {
+  margin: 4px 0 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* ---------- Example picker ---------- */
+
+.picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 28px 0 20px;
+}
+
+.picker button,
+.segmented button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.picker button {
+  min-height: 40px;
+  padding: 0 18px;
+  border: 1px solid #424245;
+  border-radius: 980px;
+  background: transparent;
+  color: #f5f5f7;
+  font-size: 15px;
+  transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+}
+
+.picker button:hover {
+  border-color: #86868b;
+}
+
+.picker button[aria-pressed="true"] {
+  border-color: #f5f5f7;
+  background: #f5f5f7;
+  color: var(--text);
+}
+
+.segmented {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 980px;
+  background: #1d1d1f;
+}
+
+.segmented button {
+  min-height: 34px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 980px;
+  background: transparent;
+  color: #a1a1a6;
+  font-size: 14px;
+  transition: background-color 0.25s var(--ease), color 0.25s var(--ease);
+}
+
+.segmented button[aria-pressed="true"] {
+  background: #424245;
+  color: #f5f5f7;
+}
+
+.example-clip {
+  transition: opacity 0.25s var(--ease);
+}
+
+.example-clip.is-swapping {
+  opacity: 0;
+}
+
+/* ---------- Method stages ---------- */
 
 .stages {
-  list-style: none;
-  margin: 3rem auto 0;
+  margin: 8px 0 0;
   padding: 0;
+  list-style: none;
+}
+
+.stages li {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  grid-template-columns: 32px 1fr;
+  margin-bottom: 18px;
+  color: var(--text-secondary);
+  font-size: clamp(15px, 1.15vw, 17px);
+  line-height: 1.45;
 }
 
 /* letters match the A/B/C panels in the architecture figure */
-.stages b {
-  display: block;
-  margin-bottom: 0.4rem;
-  font-size: 2rem;
-  font-weight: 800;
-  line-height: 1;
+.stages span {
+  color: var(--text);
+  font-weight: 600;
 }
 
-.stages p {
-  margin: 0;
-  color: var(--fg-muted);
-}
-
-.stages strong {
-  color: var(--fg);
-}
-
-/* ---------- Results ---------- */
+/* ---------- Results table ---------- */
 
 .table-wrap {
+  width: 100%;
   overflow-x: auto;
 }
 
 table {
   width: 100%;
-  min-width: 560px;
   border-collapse: collapse;
+  font-size: clamp(14px, 1.15vw, 17px);
+}
+
+/* numbers only: tabular figures also widen hyphens in names like "ASM-Loc" */
+td:not(.left) {
   font-variant-numeric: tabular-nums;
 }
 
 th,
 td {
-  padding: 0.65rem 0.75rem;
+  padding: 12px 10px;
   text-align: center;
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px solid #d2d2d7;
 }
 
 th {
-  font-weight: 700;
-  font-size: 0.9rem;
-}
-
-thead tr:last-child th {
-  border-bottom: 2px solid var(--fg);
+  color: var(--text-secondary);
+  font-size: 0.85em;
+  font-weight: 600;
 }
 
 .left {
@@ -360,64 +473,104 @@ thead tr:last-child th {
 }
 
 .best-row td {
-  font-weight: 800;
-  background: rgba(242, 194, 48, 0.32);
   border-bottom: 0;
+  color: var(--blue);
+  font-weight: 600;
 }
 
-.footnote {
-  margin: 0.75rem 0 3rem;
-  color: var(--fg-muted);
-  font-size: 0.85rem;
-}
-
-/* ---------- BibTeX + footer ---------- */
+/* ---------- BibTeX ---------- */
 
 pre {
+  width: 100%;
   margin: 0;
-  padding: 1.5rem;
+  padding: 28px;
   overflow-x: auto;
-  border-radius: 14px;
-  background: rgba(23, 48, 46, 0.06);
-  font-size: 0.85rem;
-  line-height: 1.55;
+  border-radius: 18px;
+  background: #1d1d1f;
+  color: #f5f5f7;
+  font: 13px/1.6 "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  letter-spacing: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
-.footer {
-  padding: 3rem 1.5rem 4rem;
-  text-align: center;
-  color: var(--fg-muted);
-  font-size: 0.85rem;
+/* ---------- Slide-in transitions (driven by .is-active from page.js) ---------- */
+
+.js .reveal {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
 }
 
-.footer a {
-  color: inherit;
+.js .media.reveal {
+  transform: scale(0.94);
 }
 
-/* ---------- Small screens ---------- */
+.js .slide.is-active .reveal {
+  opacity: 1;
+  transform: none;
+  transition-duration: 1s;
+  transition-delay: calc(var(--i, 0) * 90ms + 120ms);
+}
 
-@media (max-width: 720px) {
-  body {
-    font-size: 17px;
+.js .slide.is-active .media.reveal {
+  transition-duration: 1.3s;
+  transition-delay: 80ms;
+}
+
+/* ---------- Narrow or short screens: stack and stop snapping ---------- */
+
+@media (max-width: 900px), (max-height: 600px) {
+  html {
+    scroll-snap-type: none;
   }
 
-  .stages {
+  .slide {
+    height: auto;
+    min-height: 100svh;
+    padding-top: calc(var(--nav-h) + 48px);
+    padding-bottom: 64px;
+  }
+
+  .media img,
+  .teaser-frame {
+    max-height: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .slide-inner {
     grid-template-columns: 1fr;
+    gap: 40px;
   }
 
-  .plot-panel img {
-    width: 100%;
+  .copy {
+    max-width: none;
+  }
+
+  .globalnav-links {
+    display: none;
+  }
+
+  .globalnav-inner {
+    justify-content: space-between;
+  }
+
+  .media img,
+  .teaser-frame {
+    border-radius: 18px;
   }
 }
-
-/* ---------- Reduced motion: page.js skips the scroll effects; no crossfades ---------- */
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
 
-  body {
+  .js .reveal,
+  .js .media.reveal {
+    opacity: 1;
+    transform: none;
     transition: none;
   }
 }

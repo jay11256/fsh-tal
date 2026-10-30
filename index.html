@@ -10,221 +10,262 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap"
-        rel="stylesheet">
-
-  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./static/css/index.css">
   <link rel="icon" href="./static/images/favicon.svg">
 
-  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script>document.documentElement.classList.add('js');</script>
   <script defer src="./static/js/page.js"></script>
 </head>
-<body data-tone="glass">
+<body>
 
-<header class="hero" id="top" data-tone="glass" data-scroll="exit">
-  <h1 class="hero-title">Automated Temporal Localization of Behavior in Cichlid Fish
-    with Few&#8209;Shot Trajectory Tokens</h1>
-
-  <p class="authors">
-    <span><a target="_blank" href="https://bds062.github.io/">Bhargav Srinivasan</a><sup>1,2,&ast;</sup></span>
-    <span>William Lamousin<sup>1,&ast;</sup></span>
-    <span>Jason Liu<sup>1,&dagger;</sup></span>
-    <span>Charles Phan<sup>1,&dagger;</sup></span>
-    <span>Ofure Osunbor<sup>2</sup></span>
-    <span>Shubh Sharma<sup>1</sup></span>
-    <span>Cade McGeehan<sup>2</sup></span>
-    <span>Tahir Haroon<sup>2</sup></span>
-    <span>Vijay Jayasuriya<sup>1</sup></span>
-    <span>Ariel Bazan<sup>1</sup></span>
-    <span>Coltan G.&nbsp;Parker<sup>2</sup></span>
-    <span>Scott Juntti<sup>2</sup></span>
-    <span><a target="_blank" href="https://www.cs.umd.edu/~pulkit/">Pulkit Kumar</a><sup>1</sup></span>
-    <span><a target="_blank" href="https://www.cs.umd.edu/~abhinav/">Abhinav Shrivastava</a><sup>1</sup></span>
-  </p>
-  <p class="affiliations">
-    <span><sup>1</sup>Dept.&nbsp;of Computer Science, University of Maryland</span>
-    <span><sup>2</sup>Dept.&nbsp;of Biology, University of Maryland</span>
-    <span>&ast;&nbsp;&dagger;&nbsp;Equal contribution</span>
-  </p>
-
-  <nav class="links" aria-label="Project resources">
-    <a class="pill" target="_blank" href="https://bds062.github.io/projects/cichlid-social-behavior/assets/Fish_Behavior_CV4E_2026.pdf">
-      <i class="fas fa-file-pdf" aria-hidden="true"></i> Paper</a>
-    <a class="pill" target="_blank" href="https://github.com/bds062/FSH-TAL">
-      <i class="fab fa-github" aria-hidden="true"></i> Code</a>
-    <a class="pill" target="_blank" href="https://huggingface.co/datasets/bds062/cichlid-behavior-pairs">
-      <span aria-hidden="true">&#129303;</span> Data</a>
-    <a class="pill" target="_blank" href="https://huggingface.co/bds062/fsh-tal">
-      <span aria-hidden="true">&#129303;</span> Models</a>
-  </nav>
-
-  <img class="venue" src="./static/images/wacv_logo.jpeg" alt="WACV 2027, Orlando, Florida" width="180">
-</header>
-
-<!-- The TL;DR pins while its words light up one by one as you scroll. -->
-<section class="statement" data-tone="glass" aria-label="TL;DR">
-  <div class="statement-stage">
-    <p class="statement-text" data-scroll="words">Point-supervised temporal action localization
-      for cichlid behavior, trained only on point annotations.</p>
+<nav class="globalnav" aria-label="Sections">
+  <div class="globalnav-inner">
+    <a class="globalnav-brand" href="#top">FSH-TAL</a>
+    <ul class="globalnav-links">
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#abstract">Abstract</a></li>
+      <li><a href="#dataset">Dataset</a></li>
+      <li><a href="#examples">Examples</a></li>
+      <li><a href="#method">Method</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#cite">Cite</a></li>
+    </ul>
+    <a class="button button-small" target="_blank"
+       href="https://bds062.github.io/projects/cichlid-social-behavior/assets/Fish_Behavior_CV4E_2026.pdf">Paper</a>
   </div>
-</section>
+</nav>
 
-<section class="block" data-tone="glass">
-  <div class="wide">
-    <iframe class="teaser-frame" data-scroll="zoom"
-            src="https://bds062.github.io/projects/cichlid-social-behavior/teaser/index.html?theme=light"
-            title="FSH-TAL animated slide teaser" loading="lazy" allow="fullscreen" allowfullscreen></iframe>
-  </div>
-</section>
+<main>
 
-<section class="block" data-tone="glass">
-  <div class="prose">
-    <h2 data-scroll="rise">Abstract</h2>
-    <p data-scroll="rise">Understanding the brain requires studying its observable output: behavior. Cichlid
-      fish provide a model system for changing brain function and studying its effect on
-      well-defined behaviors. Such experiments require manual annotation of aquarium video
-      at real-time playback speed, which is time consuming to generate and produces single
-      time points that lack the temporal context of the underlying behavior. We provide a
-      benchmarking dataset for animal behavior containing &sim;17 hours of annotated cichlid
-      footage, and propose <strong>FSH-TAL</strong>, a temporal localization model that
-      learns from point annotations and predicts behavior-specific temporal segments in
-      full-length videos. On our dataset, FSH-TAL reaches state-of-the-art mAP (42.8%
-      averaged across IoU 0.1&ndash;0.7).</p>
-  </div>
-</section>
+<!-- Every .slide fills the screen and is a scroll-snap point. Text sits in the
+     left 40%, media in the right 60%. Elements marked .reveal animate in when
+     their slide becomes active (see static/js/page.js). -->
 
-<section class="block" data-tone="deep">
-  <div class="wide">
-    <h2 data-scroll="rise">Dataset</h2>
-    <p class="lede" data-scroll="rise">17 hour-long recordings of paired <em>Astatotilapia burtoni</em> (25&nbsp;FPS)
-      give 8,202 point-annotated events across six behaviors: Bite, Lead, Peck, Quiver, Chase,
-      and Tilt, each annotated by 4 observers for inter-rater reliability.</p>
-
-    <div class="clip-grid-wrap">
-      <div class="clip-grid" data-scroll="zoom">
-        <div class="clip-grid-label"></div>
-        <div class="clip-grid-colhead">Bite</div>
-        <div class="clip-grid-colhead">Quiver</div>
-        <div class="clip-grid-colhead">Lead</div>
-
-        <div class="clip-grid-label">Raw</div>
-        <img src="./static/images/dataset_examples/clip_07414_raw.gif" alt="Clip 07414 raw footage" loading="lazy">
-        <img src="./static/images/dataset_examples/clip_00019_raw.gif" alt="Clip 00019 raw footage" loading="lazy">
-        <img src="./static/images/dataset_examples/clip_02308_raw.gif" alt="Clip 02308 raw footage" loading="lazy">
-
-        <div class="clip-grid-label">SAM3 Masks</div>
-        <img src="./static/images/dataset_examples/clip_07414_masks.gif" alt="Clip 07414 SAM3 masks" loading="lazy">
-        <img src="./static/images/dataset_examples/clip_00019_masks.gif" alt="Clip 00019 SAM3 masks" loading="lazy">
-        <img src="./static/images/dataset_examples/clip_02308_masks.gif" alt="Clip 02308 SAM3 masks" loading="lazy">
-
-        <div class="clip-grid-label">Tracks</div>
-        <img src="./static/images/dataset_examples/clip_07414_tracks.gif" alt="Clip 07414 tracked points" loading="lazy">
-        <img src="./static/images/dataset_examples/clip_00019_tracks.gif" alt="Clip 00019 tracked points" loading="lazy">
-        <img src="./static/images/dataset_examples/clip_02308_tracks.gif" alt="Clip 02308 tracked points" loading="lazy">
+<section class="slide theme-light" id="top" aria-label="Title">
+  <div class="slide-inner">
+    <div class="copy">
+      <h1 class="reveal">Automated Temporal Localization of Behavior in Cichlid Fish with
+        Few&#8209;Shot Trajectory Tokens</h1>
+      <p class="authors reveal">
+        <a target="_blank" href="https://bds062.github.io/">Bhargav Srinivasan</a><sup>1,2,&ast;</sup>,
+        William Lamousin<sup>1,&ast;</sup>,
+        Jason Liu<sup>1,&dagger;</sup>,
+        Charles Phan<sup>1,&dagger;</sup>,
+        Ofure Osunbor<sup>2</sup>,
+        Shubh Sharma<sup>1</sup>,
+        Cade McGeehan<sup>2</sup>,
+        Tahir Haroon<sup>2</sup>,
+        Vijay Jayasuriya<sup>1</sup>,
+        Ariel Bazan<sup>1</sup>,
+        Coltan G.&nbsp;Parker<sup>2</sup>,
+        Scott Juntti<sup>2</sup>,
+        <a target="_blank" href="https://www.cs.umd.edu/~pulkit/">Pulkit Kumar</a><sup>1</sup>,
+        <a target="_blank" href="https://www.cs.umd.edu/~abhinav/">Abhinav Shrivastava</a><sup>1</sup>
+      </p>
+      <p class="fineprint reveal">
+        <sup>1</sup>Dept.&nbsp;of Computer Science, University of Maryland<br>
+        <sup>2</sup>Dept.&nbsp;of Biology, University of Maryland<br>
+        &ast;&nbsp;Equal contribution. &dagger;&nbsp;Equal contribution.
+      </p>
+      <div class="actions reveal">
+        <a class="button" target="_blank"
+           href="https://bds062.github.io/projects/cichlid-social-behavior/assets/Fish_Behavior_CV4E_2026.pdf">Paper</a>
+        <a class="button button-secondary" target="_blank" href="https://github.com/bds062/FSH-TAL">Code</a>
+        <a class="button button-secondary" target="_blank" href="https://huggingface.co/datasets/bds062/cichlid-behavior-pairs">Data</a>
+        <a class="button button-secondary" target="_blank" href="https://huggingface.co/bds062/fsh-tal">Models</a>
       </div>
-
-      <div class="clip-grid" data-scroll="zoom">
-        <div class="clip-grid-label"></div>
-        <div class="clip-grid-colhead">Tilt</div>
-        <div class="clip-grid-colhead">Chase</div>
-        <div class="clip-grid-colhead">Peck</div>
-
-        <div class="clip-grid-label">Raw</div>
-        <img src="./static/images/dataset_examples/clip_00527_raw.gif" alt="Clip 00527 raw footage" loading="lazy">
-        <img src="./static/images/dataset_examples/clip_00852_raw.gif" alt="Clip 00852 raw footage" loading="lazy">
-        <img src="./static/images/dataset_examples/clip_00663_raw.gif" alt="Clip 00663 raw footage" loading="lazy">
-
-        <div class="clip-grid-label">SAM3 Masks</div>
-        <img src="./static/images/dataset_examples/clip_00527_masks.gif" alt="Clip 00527 SAM3 masks" loading="lazy">
-        <img src="./static/images/dataset_examples/clip_00852_masks.gif" alt="Clip 00852 SAM3 masks" loading="lazy">
-        <img src="./static/images/dataset_examples/clip_00663_masks.gif" alt="Clip 00663 SAM3 masks" loading="lazy">
-
-        <div class="clip-grid-label">Tracks</div>
-        <img src="./static/images/dataset_examples/clip_00527_tracks.gif" alt="Clip 00527 tracked points" loading="lazy">
-        <img src="./static/images/dataset_examples/clip_00852_tracks.gif" alt="Clip 00852 tracked points" loading="lazy">
-        <img src="./static/images/dataset_examples/clip_00663_tracks.gif" alt="Clip 00663 tracked points" loading="lazy">
-      </div>
+      <img class="venue reveal" src="./static/images/wacv_logo.jpeg" alt="WACV 2027, Orlando, Florida" width="150">
     </div>
+    <figure class="media reveal">
+      <img src="./static/images/dataset_examples/clip_00019_raw.gif" alt="Two cichlids in an aquarium tank, raw footage">
+    </figure>
+  </div>
+</section>
 
-    <figure class="plot-panel" data-scroll="zoom">
-      <!-- shifted left so the plot frame, not the y-axis label, is centered -->
+<section class="slide theme-dark" id="overview" aria-label="Overview">
+  <div class="slide-inner">
+    <div class="copy">
+      <p class="eyebrow reveal">TL;DR</p>
+      <h2 class="reveal">Point-supervised temporal action localization for cichlid behavior,
+        trained only on point annotations.</h2>
+    </div>
+    <figure class="media reveal">
+      <iframe class="teaser-frame"
+              src="https://bds062.github.io/projects/cichlid-social-behavior/teaser/index.html?theme=light"
+              title="FSH-TAL animated slide teaser" loading="lazy" allow="fullscreen"></iframe>
+    </figure>
+  </div>
+</section>
+
+<section class="slide theme-gray" id="abstract" aria-label="Abstract">
+  <div class="slide-inner">
+    <div class="copy">
+      <p class="eyebrow reveal">Abstract</p>
+      <p class="body-text reveal">Understanding the brain requires studying its observable output:
+        behavior. Cichlid fish provide a model system for changing brain function and studying its
+        effect on well-defined behaviors. Such experiments require manual annotation of aquarium
+        video at real-time playback speed, which is time consuming to generate and produces single
+        time points that lack the temporal context of the underlying behavior. We provide a
+        benchmarking dataset for animal behavior containing &sim;17 hours of annotated cichlid
+        footage, and propose <strong>FSH-TAL</strong>, a temporal localization model that learns
+        from point annotations and predicts behavior-specific temporal segments in full-length
+        videos. On our dataset, FSH-TAL reaches state-of-the-art mAP (42.8% averaged across IoU
+        0.1&ndash;0.7).</p>
+    </div>
+    <figure class="media reveal">
+      <img src="./static/images/dataset_examples/clip_00852_raw.gif" alt="Two cichlids in an aquarium tank, raw footage" loading="lazy">
+    </figure>
+  </div>
+</section>
+
+<section class="slide theme-light" id="dataset" aria-label="Dataset">
+  <div class="slide-inner">
+    <div class="copy">
+      <p class="eyebrow reveal">Dataset</p>
+      <h2 class="reveal">17 hours of annotated cichlid footage.</h2>
+      <p class="body-text reveal">17 hour-long recordings of paired <em>Astatotilapia burtoni</em>
+        (25&nbsp;FPS) give 8,202 point-annotated events across six behaviors: Bite, Lead, Peck,
+        Quiver, Chase, and Tilt, each annotated by 4 observers for inter-rater reliability.</p>
+      <dl class="stats reveal">
+        <div><dt>8,202</dt><dd>point-annotated events</dd></div>
+        <div><dt>6</dt><dd>behaviors</dd></div>
+        <div><dt>4</dt><dd>observers per recording</dd></div>
+      </dl>
+    </div>
+    <figure class="media media-plain reveal">
       <img src="./static/images/behavior_counts.png" alt="Annotated events per behavior class" loading="lazy">
     </figure>
   </div>
 </section>
 
-<section class="block" data-tone="glass">
-  <div class="wide">
-    <h2 data-scroll="rise">Method</h2>
-    <img class="figure" data-scroll="zoom" src="./static/images/architecture.png" alt="FSH-TAL architecture" loading="lazy">
-    <ol class="stages" data-scroll="rise">
-      <li><b>A</b><p>SAM3 segments both fish from the text prompt &ldquo;fish&rdquo; and we track
-        18 points per clip across the predicted masks.</p></li>
-      <li><b>B</b><p>A few-shot MIL classifier, built on Trokens, fuses DINOv2 features with the
-        tracked trajectories, trained in 5-way 3-shot episodes so co-occurring behaviors share
-        a clip.</p></li>
-      <li><b>C</b><p><strong>FSH-TAL</strong> trains a temporal transformer on the frozen MIL
-        embeddings at 4&nbsp;FPS, predicting behavior, timespan, and centerness, decoded with
-        greedy NMS per behavior.</p></li>
-    </ol>
-  </div>
-</section>
+<section class="slide theme-dark" id="examples" aria-label="Examples">
+  <div class="slide-inner">
+    <div class="copy">
+      <p class="eyebrow reveal">Examples</p>
+      <h2 class="reveal">Six behaviors, three views.</h2>
+      <p class="body-text reveal">Each clip is shown as raw footage, with SAM3 masks, and with
+        tracked points.</p>
 
-<section class="block" data-tone="glass">
-  <div class="wide">
-    <h2 data-scroll="rise">Results</h2>
-    <p class="lede" data-scroll="rise"><strong>FSH-TAL</strong> reaches 42.8% mAP (IoU 0.1&ndash;0.7), ahead of
-      weakly-supervised (ASM-Loc, HR-Pro) and fully-supervised (ActionFormer) baselines at every
-      IoU threshold, despite training on point labels alone.</p>
+      <div class="picker reveal" role="group" aria-label="Behavior">
+        <button type="button" data-clip="07414" aria-pressed="true">Bite</button>
+        <button type="button" data-clip="00019" aria-pressed="false">Quiver</button>
+        <button type="button" data-clip="02308" aria-pressed="false">Lead</button>
+        <button type="button" data-clip="00527" aria-pressed="false">Tilt</button>
+        <button type="button" data-clip="00852" aria-pressed="false">Chase</button>
+        <button type="button" data-clip="00663" aria-pressed="false">Peck</button>
+      </div>
 
-    <div class="table-wrap" data-scroll="rise">
-      <table>
-        <thead>
-          <tr>
-            <th rowspan="2" class="left">Method</th>
-            <th rowspan="2">#Params</th>
-            <th colspan="5">mAP@IoU (%)</th>
-          </tr>
-          <tr>
-            <th>0.1</th><th>0.3</th><th>0.5</th><th>0.7</th><th>Avg</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="left">MIL classifier</td><td>16.0M</td><td>25.7</td><td>12.0</td><td>4.6</td><td>0.5</td><td>10.5</td></tr>
-          <tr><td class="left">MIL + post-proc</td><td>16.0M</td><td>39.1</td><td>20.7</td><td>3.1</td><td>0.1</td><td>14.9</td></tr>
-          <tr><td class="left">ASM-Loc</td><td>1.8M&dagger;</td><td>26.8</td><td>16.9</td><td>6.1</td><td>1.2</td><td>12.4</td></tr>
-          <tr><td class="left">HR-Pro</td><td>23.2M</td><td>33.6</td><td>21.7</td><td>7.8</td><td>1.2</td><td>15.6</td></tr>
-          <tr><td class="left">ActionFormer</td><td>27.3M&dagger;</td><td>35.1</td><td>32.2</td><td>25.4</td><td>14.0</td><td>27.3</td></tr>
-          <tr class="best-row"><td class="left">FSH-TAL (ours)</td><td>15.8M&dagger;</td><td>53.3</td><td>48.7</td><td>41.3</td><td>24.7</td><td>42.8</td></tr>
-        </tbody>
-      </table>
+      <div class="segmented reveal" role="group" aria-label="View">
+        <button type="button" data-view="raw" aria-pressed="true">Raw</button>
+        <button type="button" data-view="masks" aria-pressed="false">SAM3 masks</button>
+        <button type="button" data-view="tracks" aria-pressed="false">Tracks</button>
+      </div>
     </div>
-    <p class="footnote">&dagger; Not including parameters used to generate embeddings.</p>
-
-    <img class="figure" data-scroll="zoom" src="./static/images/sota_curve.png" alt="mAP vs. IoU threshold" loading="lazy">
+    <figure class="media reveal">
+      <img class="example-clip" src="./static/images/dataset_examples/clip_07414_raw.gif"
+           alt="Bite, raw footage" loading="lazy">
+    </figure>
   </div>
 </section>
 
-<section class="block" id="BibTeX" data-tone="glass">
-  <div class="wide">
-    <h2 data-scroll="rise">BibTeX</h2>
-    <pre data-scroll="rise"><code>@inproceedings{srinivasan2026automated,
+<section class="slide theme-light" id="method" aria-label="Method">
+  <div class="slide-inner">
+    <div class="copy">
+      <p class="eyebrow reveal">Method</p>
+      <h2 class="reveal">FSH-TAL has three stages.</h2>
+      <ol class="stages">
+        <li class="reveal"><span>A</span>SAM3 segments both fish from the text prompt &ldquo;fish&rdquo;
+          and we track 18 points per clip across the predicted masks.</li>
+        <li class="reveal"><span>B</span>A few-shot MIL classifier, built on Trokens, fuses DINOv2
+          features with the tracked trajectories, trained in 5-way 3-shot episodes so co-occurring
+          behaviors share a clip.</li>
+        <li class="reveal"><span>C</span>FSH-TAL trains a temporal transformer on the frozen MIL
+          embeddings at 4&nbsp;FPS, predicting behavior, timespan, and centerness, decoded with
+          greedy NMS per behavior.</li>
+      </ol>
+    </div>
+    <figure class="media media-plain reveal">
+      <img src="./static/images/architecture.png" alt="FSH-TAL architecture" loading="lazy">
+    </figure>
+  </div>
+</section>
+
+<section class="slide theme-gray" id="results" aria-label="Results">
+  <div class="slide-inner">
+    <div class="copy">
+      <p class="eyebrow reveal">Results</p>
+      <h2 class="headline-number reveal">42.8% mAP</h2>
+      <p class="body-text reveal"><strong>FSH-TAL</strong> reaches 42.8% mAP (IoU 0.1&ndash;0.7),
+        ahead of weakly-supervised (ASM-Loc, HR-Pro) and fully-supervised (ActionFormer) baselines
+        at every IoU threshold, despite training on point labels alone.</p>
+    </div>
+    <figure class="media media-plain reveal">
+      <img src="./static/images/sota_curve.png" alt="mAP vs. IoU threshold" loading="lazy">
+    </figure>
+  </div>
+</section>
+
+<section class="slide theme-light" id="comparison" aria-label="Comparison with baselines">
+  <div class="slide-inner">
+    <div class="copy">
+      <p class="eyebrow reveal">Comparison</p>
+      <h2 class="reveal">Ahead at every IoU threshold.</h2>
+      <p class="body-text reveal">Compared with weakly-supervised and fully-supervised baselines,
+        while training on point labels alone.</p>
+      <p class="fineprint reveal">&dagger; Not including parameters used to generate embeddings.</p>
+    </div>
+    <figure class="media media-plain reveal">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th rowspan="2" class="left">Method</th>
+              <th rowspan="2">#Params</th>
+              <th colspan="5">mAP@IoU (%)</th>
+            </tr>
+            <tr><th>0.1</th><th>0.3</th><th>0.5</th><th>0.7</th><th>Avg</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="left">MIL classifier</td><td>16.0M</td><td>25.7</td><td>12.0</td><td>4.6</td><td>0.5</td><td>10.5</td></tr>
+            <tr><td class="left">MIL + post-proc</td><td>16.0M</td><td>39.1</td><td>20.7</td><td>3.1</td><td>0.1</td><td>14.9</td></tr>
+            <tr><td class="left">ASM-Loc</td><td>1.8M&dagger;</td><td>26.8</td><td>16.9</td><td>6.1</td><td>1.2</td><td>12.4</td></tr>
+            <tr><td class="left">HR-Pro</td><td>23.2M</td><td>33.6</td><td>21.7</td><td>7.8</td><td>1.2</td><td>15.6</td></tr>
+            <tr><td class="left">ActionFormer</td><td>27.3M&dagger;</td><td>35.1</td><td>32.2</td><td>25.4</td><td>14.0</td><td>27.3</td></tr>
+            <tr class="best-row"><td class="left">FSH-TAL (ours)</td><td>15.8M&dagger;</td><td>53.3</td><td>48.7</td><td>41.3</td><td>24.7</td><td>42.8</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<section class="slide theme-dark" id="cite" aria-label="Citation">
+  <div class="slide-inner">
+    <div class="copy">
+      <p class="eyebrow reveal">Cite</p>
+      <h2 class="reveal">BibTeX</h2>
+      <p class="body-text reveal">If you find this work useful, please cite it.</p>
+      <div class="actions reveal">
+        <button type="button" class="button" id="copy-bibtex">Copy BibTeX</button>
+      </div>
+      <p class="credits reveal">Website adapted from
+        <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>, licensed under
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</p>
+    </div>
+    <figure class="media media-plain reveal">
+      <pre><code id="bibtex">@inproceedings{srinivasan2026automated,
   title={Automated Temporal Localization of Behavior in Cichlid Fish with Few-Shot Trajectory Tokens},
   author={Bhargav Srinivasan and William Lamousin and Jason Liu and Charles Phan and Ofure Osunbor and Cade McGeehan and Shubh Sharma and Tahir Haroon and Vijay Jayasuriya and Coltan G. Parker and Scott Juntti and Pulkit Kumar and Abhinav Shrivastava},
   booktitle={Third Workshop on Computer Vision for Ecology},
   year={2026},
   url={https://openreview.net/forum?id=T4haB8tCOJ}
 }</code></pre>
+    </figure>
   </div>
 </section>
 
-<footer class="footer">
-  <a href="#top"><i class="fa fa-arrow-up" aria-hidden="true"></i> Back to top</a>
-  <p>Website adapted from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>,
-    licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons
-    Attribution-ShareAlike 4.0 International</a>.</p>
-</footer>
+</main>
 
 </body>
 </html>
