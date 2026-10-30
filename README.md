@@ -1,29 +1,16 @@
-# FSH-TAL project page
+# Nerfies
 
-Source for the project page for **Automated Temporal Localization of Behavior in Cichlid Fish
-with Few-Shot Trajectory Tokens** (CV4Ecology Workshop, ECCV 2026).
+This is the repository that contains source code for the [Nerfies website](https://nerfies.github.io).
 
-- Code: https://github.com/bds062/FSH-TAL
-- Dataset: https://huggingface.co/datasets/bds062/cichlid-behavior-pairs
-- Models: https://huggingface.co/bds062/fsh-tal
-
-If you find this work useful, please cite:
+If you find Nerfies useful for your work please cite:
 ```
-@inproceedings{srinivasan2026automated,
-  title     = {Automated Temporal Localization of Behavior in Cichlid Fish with Few-Shot Trajectory Tokens},
-  author    = {Bhargav Srinivasan and William Lamousin and Jason Liu and Charles Phan and Ofure Osunbor and Cade McGeehan and Shubh Sharma and Tahir Haroon and Vijay Jayasuriya and Coltan G. Parker and Scott Juntti and Pulkit Kumar and Abhinav Shrivastava},
-  booktitle = {Third Workshop on Computer Vision for Ecology (CV4Ecology), ECCV},
-  year      = {2026}
+@article{park2021nerfies
+  author    = {Park, Keunhong and Sinha, Utkarsh and Barron, Jonathan T. and Bouaziz, Sofien and Goldman, Dan B and Seitz, Steven M. and Martin-Brualla, Ricardo},
+  title     = {Nerfies: Deformable Neural Radiance Fields},
+  journal   = {ICCV},
+  year      = {2021},
 }
 ```
 
-## Local preview
-```
-python3 -m http.server -d . 8000
-```
-then open `http://localhost:8000`.
-
-## Credits
-Built with the [Nerfies project page template](https://github.com/nerfies/nerfies.github.io)
-(Bulma + vanilla JS), licensed under
-[CC BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/).
+# Website License
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
