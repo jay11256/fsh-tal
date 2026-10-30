@@ -56,11 +56,14 @@
   }
 
   // ---------- Clip walls (title and links slides) ----------
-  // Raw dataset clips tiled across the slide, each started at a random point
-  // so they never loop in step. Browsers cap how many video players a page may
+  // Raw dataset clips (static/media/wall/, 480×270 copies) tiled across the
+  // slide in a random order, each started at a random point in its loop. Browsers cap how many video players a page may
   // hold (~75 desktop, fewer on phones), so a wall only exists while its slide
   // is active, with about 30 tiles at most.
-  var WALL_CLIPS = ['bite', 'chase', 'lead', 'peck', 'quiver', 'tilt'];
+  var WALL_CLIPS = [
+    '00006', '00019', '00020', '00039', '00053', '00527', '00528', '00585', '00663', '00843', '00844',
+    '00852', '02308', '02362', '02363', '02471', '02474', '04371', '07414', '08877', '08984'
+  ];
   var MAX_TILES = 30;
 
   function buildWall(wall) {
@@ -71,6 +74,7 @@
     var rows = function () { return Math.ceil(h / (w / cols * 9 / 16)); };
     while (cols > 2 && cols * rows() > MAX_TILES) cols--;
     wall.style.setProperty('--cols', cols);
+    var order = WALL_CLIPS.slice().sort(function () { return Math.random() - 0.5; });
     for (var i = 0, n = cols * rows(); i < n; i++) {
       var v = document.createElement('video');
       v.className = 'bg';
@@ -78,9 +82,7 @@
       v.loop = true;
       v.playsInline = true;
       v.setAttribute('playsinline', '');
-      // shift each row so the same clip doesn't stack into columns
-      v.src = './static/media/beh_' +
-        WALL_CLIPS[(i + Math.floor(i / cols) * 2) % WALL_CLIPS.length] + '_raw.mp4';
+      v.src = './static/media/wall/clip_' + order[i % order.length] + '.mp4';
       // seek only once the (small) clip is fully buffered: an earlier seek
       // can stall on servers without range requests, or be dropped mid-play()
       v.wallOffset = Math.random();
