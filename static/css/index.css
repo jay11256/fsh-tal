@@ -19,10 +19,55 @@ body {
   padding: 3rem 1.5rem;
 }
 
-/* The title/author/links hero flows straight into the TL;DR teaser
-   beneath it, with no gap between them. */
-.landing .hero-body {
+/* The title/author/links hero and the TL;DR teaser sit together on a grid
+   of raw dataset clips, washed out by a light overlay so the text stays
+   readable. The hero flows straight into the teaser with no gap. */
+.landing {
+  position: relative;
+  overflow: hidden;
+}
+
+.landing > section {
+  position: relative;
+  z-index: 1;
+}
+
+.landing-hero .hero-body {
   padding-bottom: 0;
+}
+
+.landing-bg {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-auto-rows: auto;
+  gap: 2px;
+  align-content: start;
+}
+
+.landing-bg img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+
+.landing-bg img.mirrored {
+  transform: scaleX(-1);
+}
+
+.landing-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+@media screen and (max-width: 768px) {
+  .landing-bg {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
 }
 
 .tldr-section {

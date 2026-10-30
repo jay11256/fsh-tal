@@ -20,10 +20,39 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script>
+    // Fill the landing background with a tiled grid of raw dataset clips,
+    // adding tiles until it covers the area; each row is offset and every
+    // other row is mirrored so repeats are less obvious.
+    $(function () {
+      var clips = ['00019', '07414', '00527', '02308', '00852', '00663'];
+      var $bg = $('.landing-bg');
+      var n = 0;
+      function fill() {
+        var cols = getComputedStyle($bg[0]).gridTemplateColumns.split(' ').length;
+        var $last = $bg.children().last();
+        // keep going until the grid is tall enough and the last row is full
+        while (n < 300 && (!$last.length || n % cols ||
+                           $last.position().top + $last.outerHeight() < $bg.height())) {
+          var row = Math.floor(n / cols);
+          $last = $('<img>', {
+            src: './static/images/dataset_examples/clip_' + clips[(n + 2 * row) % clips.length] + '_raw.gif',
+            alt: '',
+            'class': row % 2 ? 'mirrored' : ''
+          }).appendTo($bg);
+          n++;
+        }
+      }
+      fill();
+      $(window).on('resize load', fill);
+    });
+  </script>
 </head>
 <body>
 
-<section class="hero landing">
+<div class="landing">
+<div class="landing-bg" aria-hidden="true"></div>
+<section class="hero landing-hero">
   <div class="hero-body">
     <div class="container">
       <div class="columns is-centered">
@@ -79,7 +108,7 @@
                 </a>
               </span>
             </div>
-            <img src="./static/images/wacv_logo.jpeg" alt="WACV logo" width="200" style="margin-top: 1rem;">
+            <img src="./static/images/wacv_logo.png" alt="WACV logo" width="200" style="margin-top: 1rem;">
           </div>
         </div>
       </div>
@@ -110,6 +139,8 @@
     </div>
   </div>
 </section>
+
+</div>
 
 <section class="hero is-light">
   <div class="hero-body">
