@@ -285,7 +285,13 @@ h2 {
 .actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
+}
+
+/* keep the four title-slide links on one row in the 40% column */
+.actions .button {
+  padding: 0 clamp(14px, 1.2vw, 18px);
+  font-size: clamp(15px, 1.2vw, 17px);
 }
 
 .button {
@@ -322,6 +328,39 @@ h2 {
   min-height: 28px;
   padding: 0 14px;
   font-size: 12px;
+}
+
+/* Font Awesome icons (inline <symbol>s in index.html) and the 🤗 emoji */
+.button .icon {
+  width: 1em;
+  height: 1em;
+  margin-right: 0.45em;
+  fill: currentColor;
+}
+
+.button .emoji {
+  margin-right: 0.35em;
+}
+
+.globalnav-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.globalnav-links + .globalnav-actions {
+  margin-left: 0;
+}
+
+.globalnav[data-theme="dark"] .button-secondary {
+  border-color: var(--link-dark);
+  color: var(--link-dark);
+}
+
+.globalnav[data-theme="dark"] .button-secondary:hover {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
 }
 
 /* ---------- Dataset stats ---------- */
@@ -538,6 +577,31 @@ pre {
   }
 }
 
+@media (max-width: 1180px) {
+  .globalnav-links {
+    display: none;
+  }
+
+  .globalnav-links + .globalnav-actions {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 520px) {
+  .globalnav-brand {
+    display: none;
+  }
+
+  .globalnav-actions {
+    gap: 6px;
+    margin: 0 auto;
+  }
+
+  .globalnav-actions .button-small {
+    padding: 0 10px;
+  }
+}
+
 @media (max-width: 900px) {
   .slide-inner {
     grid-template-columns: 1fr;
@@ -546,14 +610,6 @@ pre {
 
   .copy {
     max-width: none;
-  }
-
-  .globalnav-links {
-    display: none;
-  }
-
-  .globalnav-inner {
-    justify-content: space-between;
   }
 
   .media img,

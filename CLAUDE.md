@@ -18,7 +18,8 @@ then open `http://localhost:8000`.
 - `static/css/index.css` — all styles; Apple palette and type tokens on `:root`.
 - `static/js/page.js` — active-slide tracking, paging, the Examples picker, and copy-BibTeX.
 - `static/images/dataset_examples/clip_<id>_{raw,masks,tracks}.gif` — 320×180 GIFs; each clip ID has three variants (raw footage, SAM3 masks, tracked points). Behavior → clip ID mapping lives in the Examples picker's `data-clip` attributes.
-- `static/css/bulma.min.css`, `static/css/fontawesome.*`, `static/js/fontawesome.*` are leftovers from the original Nerfies template and are not loaded by the page.
+- `static/css/bulma.min.css`, `static/css/fontawesome.*`, `static/js/fontawesome.*` are leftovers from the original Nerfies template and are not loaded by the page. The two icons the page uses (Font Awesome `file-pdf` and `github`) are inlined as `<symbol>`s at the top of `<body>` and referenced with `<use href="#icon-…">`; Data/Models use the 🤗 emoji.
+- The Paper/Code/Data/Models links appear twice, on the title slide and in the nav bar's `.globalnav-actions`, so keep both copies in sync. Below 1180px the nav's section links hide to make room for the buttons, and below 520px the "FSH-TAL" brand hides too.
 
 ## Things that aren't obvious from a single file
 
