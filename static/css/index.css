@@ -411,11 +411,28 @@ h2 {
   background: #0b0d10;
 }
 
-.slide-video video.bg {
+/* the raw dataset clips tiled across the slide, faint, each at its own point in its loop */
+.clip-wall {
   position: absolute;
   inset: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 6), 1fr);
+  align-content: center;
+  gap: 2px;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.slide.is-active .clip-wall {
+  opacity: 0.28;
+  transition: opacity 1.4s var(--ease) 0.2s;
+}
+
+.clip-wall video {
+  display: block;
   width: 100%;
-  height: 100%;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
 }
 
@@ -448,12 +465,8 @@ h2 {
 }
 
 #top .authors a {
-  color: #fff;
+  color: var(--link-dark);
   font-weight: 600;
-}
-
-#links video.bg {
-  opacity: 0.6;
 }
 
 #links .shade {

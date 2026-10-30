@@ -33,6 +33,7 @@
     navLinks.forEach(function (a) {
       a.setAttribute('aria-current', a.getAttribute('href') === '#' + id ? 'true' : 'false');
     });
+    updateWalls(slide);
     playVideos(slide);
     countUp(slide);
   }
@@ -45,11 +46,84 @@
       if (!slide.contains(v)) { v.pause(); return; }
       // decorative background loops stay still for reduced motion
       if (reduceMotion.matches && v.classList.contains('bg')) return;
-      try { v.currentTime = 0; } catch (e) {}
+      // wall clips keep their own place in the loop; the rest start over
+      if (!v.classList.contains('bg')) {
+        try { v.currentTime = 0; } catch (e) {}
+      }
       var p = v.play();
       if (p && p.catch) p.catch(function () {});
     });
   }
+
+  // ---------- Clip walls (title and links slides) ----------
+  // Raw dataset clips tiled across the slide, each started at a random point
+  // so they never loop in step. Browsers cap how many video players a page may
+  // hold (~75 desktop, fewer on phones), so a wall only exists while its slide
+  // is active, with about 30 tiles at most.
+  var WALL_CLIPS = ['bite', 'chase', 'lead', 'peck', 'quiver', 'tilt'];
+  var MAX_TILES = 30;
+
+  function buildWall(wall) {
+    clearWall(wall);
+    var w = wall.clientWidth, h = wall.clientHeight;
+    if (!w || !h) return;
+    var cols = Math.max(2, Math.round(w / Math.sqrt(w * h * 16 / 9 / MAX_TILES)));
+    var rows = function () { return Math.ceil(h / (w / cols * 9 / 16)); };
+    while (cols > 2 && cols * rows() > MAX_TILES) cols--;
+    wall.style.setProperty('--cols', cols);
+    for (var i = 0, n = cols * rows(); i < n; i++) {
+      var v = document.createElement('video');
+      v.className = 'bg';
+      v.muted = true;
+      v.loop = true;
+      v.playsInline = true;
+      v.setAttribute('playsinline', '');
+      // shift each row so the same clip doesn't stack into columns
+      v.src = './static/media/beh_' +
+        WALL_CLIPS[(i + Math.floor(i / cols) * 2) % WALL_CLIPS.length] + '_raw.mp4';
+      // seek only once the (small) clip is fully buffered: an earlier seek
+      // can stall on servers without range requests, or be dropped mid-play()
+      v.wallOffset = Math.random();
+      ['canplaythrough', 'playing', 'timeupdate'].forEach(function (type) {
+        v.addEventListener(type, seekToOffset);
+      });
+      wall.appendChild(v);
+    }
+  }
+
+  function seekToOffset() {
+    if (this.seeded || this.readyState < 4 || !this.duration) return;
+    this.currentTime = this.wallOffset * this.duration;
+    if (this.currentTime > 0.05 || this.wallOffset < 0.02) this.seeded = true;
+  }
+
+  function clearWall(wall) {
+    wall.querySelectorAll('video').forEach(function (v) {
+      v.pause();
+      v.removeAttribute('src');
+      v.load();   // releases the player
+      wall.removeChild(v);
+    });
+  }
+
+  function updateWalls(slide) {
+    document.querySelectorAll('.clip-wall').forEach(function (wall) {
+      if (slide.contains(wall)) {
+        if (!wall.firstChild) buildWall(wall);
+      } else if (wall.firstChild) {
+        clearWall(wall);
+      }
+    });
+  }
+
+  var wallTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(wallTimer);
+    wallTimer = setTimeout(function () {
+      var wall = activeSlide && activeSlide.querySelector('.clip-wall');
+      if (wall) { buildWall(wall); playVideos(activeSlide); }
+    }, 200);
+  });
 
   // Clips in a [data-sync] row show the same moment through different stages,
   // so the others follow the first one whenever they drift apart.

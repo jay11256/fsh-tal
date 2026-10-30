@@ -51,14 +51,14 @@
 
 <!-- One .slide per slide of the animated teaser. Every .slide fills the screen;
      text sits in the left 40%, media in the right 60% (the title and closing
-     slides are full-bleed video instead). .reveal elements slide in when their
+     slides instead sit on a dim wall of
+     looping dataset clips, built by page.js). .reveal elements slide in when their
      slide becomes active; .pop / .draw / .grow / .growx are figure animations
      timed by --d (seconds). Videos play only while their slide is active. See
      static/js/page.js. -->
 
 <section class="slide slide-video theme-dark" id="top" aria-label="Title">
-  <video class="bg" src="./static/media/title_bg.mp4" poster="./static/media/title_poster.jpg"
-         muted loop playsinline autoplay preload="auto" aria-hidden="true"></video>
+  <div class="clip-wall" aria-hidden="true"></div>
   <div class="shade"></div>
   <div class="slide-inner">
     <div class="copy">
@@ -191,10 +191,10 @@
   </div>
 </section>
 
-<section class="slide theme-gray" id="tracking" aria-label="Stage A: object-grounded trajectories">
+<section class="slide theme-gray" id="tracking" aria-label="Tracking: object-grounded trajectories">
   <div class="slide-inner">
     <div class="copy">
-      <p class="eyebrow reveal">Stage A <span>&middot; object-grounded trajectories</span></p>
+      <p class="eyebrow reveal">Tracking <span>&middot; object-grounded trajectories</span></p>
       <h2 class="reveal">Segmentation based keypoint tracking.</h2>
       <p class="body-text reveal">SAM3 segments both fish in every frame, and points are tracked
         across the masks to give each fish a trajectory.</p>
@@ -283,8 +283,7 @@
 </section>
 
 <section class="slide slide-video theme-dark" id="links" aria-label="Paper, code, and data">
-  <video class="bg" src="./static/media/collage_bg.mp4" poster="./static/media/collage_poster.jpg"
-         muted loop playsinline preload="auto" aria-hidden="true"></video>
+  <div class="clip-wall" aria-hidden="true"></div>
   <div class="shade"></div>
   <div class="slide-inner">
     <div class="copy">
