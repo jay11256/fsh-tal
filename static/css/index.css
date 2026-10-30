@@ -32,6 +32,7 @@ body[data-tone="deep"] {
 
 html {
   -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -152,70 +153,39 @@ h2 {
   mix-blend-mode: multiply;
 }
 
-/* ---------- Reel: mosaic that zooms into its center clip ---------- */
+/* ---------- Statement: TL;DR pinned while its words light up ---------- */
 
-.reel {
-  height: 300vh;
+.statement {
+  height: 220vh;
+  padding: 0 1.5rem;
 }
 
-.reel-stage {
+.statement-stage {
   position: sticky;
   top: 0;
   height: 100vh;
   height: 100svh;
-  overflow: hidden;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.reel-grid {
-  --scale: 1;
-  --fade: 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(6px, 1vw, 12px);
-  width: min(92vw, 1080px);
-  transform: scale(var(--scale));
-  will-change: transform;
-}
-
-.reel-grid img {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  /* radius shrinks as the grid grows so the focus clip ends square-cornered */
-  border-radius: calc(14px / var(--scale));
-  opacity: calc(1 - var(--fade));
-}
-
-.reel-grid .reel-focus {
-  opacity: 1;
-}
-
-.reel-stage::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--deep);
-  opacity: calc(0.62 * var(--caption, 0));
-  pointer-events: none;
-}
-
-.reel-caption {
-  position: absolute;
-  z-index: 1;
-  max-width: 18em;
+.statement-text {
+  max-width: 17em;
   margin: 0;
-  padding: 0 1.5rem;
-  color: #fff;
-  font-size: clamp(1.8rem, 4.6vw, 3.6rem);
+  font-size: clamp(2rem, 5.4vw, 4.2rem);
   font-weight: 800;
   line-height: 1.08;
-  letter-spacing: -0.03em;
-  text-align: center;
+  letter-spacing: -0.035em;
   text-wrap: balance;
-  opacity: var(--caption, 0);
-  transform: translateY(calc((1 - var(--caption, 0)) * 24px));
+}
+
+/* ---------- Scroll-linked motion (values written by static/js/page.js) ---------- */
+
+[data-scroll="rise"],
+[data-scroll="zoom"],
+[data-scroll="exit"] {
+  will-change: transform, opacity;
 }
 
 /* ---------- Content blocks ---------- */
@@ -440,35 +410,14 @@ pre {
   }
 }
 
-/* ---------- Reduced motion: no scroll-driven zoom or crossfades ---------- */
+/* ---------- Reduced motion: page.js skips the scroll effects; no crossfades ---------- */
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   body {
     transition: none;
-  }
-
-  .reel {
-    height: auto;
-    padding: 4rem 1.5rem;
-    background: var(--deep);
-  }
-
-  .reel-stage {
-    position: static;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2.5rem;
-  }
-
-  .reel-stage::after {
-    display: none;
-  }
-
-  .reel-caption {
-    position: static;
-    opacity: 1;
-    transform: none;
   }
 }

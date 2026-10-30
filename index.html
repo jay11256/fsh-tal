@@ -22,7 +22,7 @@
 </head>
 <body data-tone="glass">
 
-<header class="hero" id="top" data-tone="glass">
+<header class="hero" id="top" data-tone="glass" data-scroll="exit">
   <h1 class="hero-title">Automated Temporal Localization of Behavior in Cichlid Fish
     with Few&#8209;Shot Trajectory Tokens</h1>
 
@@ -62,29 +62,17 @@
   <img class="venue" src="./static/images/wacv_logo.jpeg" alt="WACV 2027, Orlando, Florida" width="180">
 </header>
 
-<!-- Scroll-driven mosaic: the grid zooms until the center clip fills the screen,
-     then the TL;DR appears over it. Driven by static/js/page.js. -->
-<section class="reel" data-tone="deep" data-tone-at="0.1" aria-label="TL;DR">
-  <div class="reel-stage">
-    <div class="reel-grid">
-      <img src="./static/images/dataset_examples/clip_07414_raw.gif" alt="">
-      <img src="./static/images/dataset_examples/clip_00527_masks.gif" alt="">
-      <img src="./static/images/dataset_examples/clip_02308_raw.gif" alt="">
-      <img src="./static/images/dataset_examples/clip_00852_tracks.gif" alt="">
-      <img class="reel-focus" src="./static/images/dataset_examples/clip_00019_raw.gif" alt="A pair of cichlids in an aquarium tank">
-      <img src="./static/images/dataset_examples/clip_00663_raw.gif" alt="">
-      <img src="./static/images/dataset_examples/clip_00527_raw.gif" alt="">
-      <img src="./static/images/dataset_examples/clip_07414_tracks.gif" alt="">
-      <img src="./static/images/dataset_examples/clip_00852_raw.gif" alt="">
-    </div>
-    <p class="reel-caption">Point-supervised temporal action localization for cichlid behavior,
-      trained only on point annotations.</p>
+<!-- The TL;DR pins while its words light up one by one as you scroll. -->
+<section class="statement" data-tone="glass" aria-label="TL;DR">
+  <div class="statement-stage">
+    <p class="statement-text" data-scroll="words">Point-supervised temporal action localization
+      for cichlid behavior, trained only on point annotations.</p>
   </div>
 </section>
 
 <section class="block" data-tone="glass">
   <div class="wide">
-    <iframe class="teaser-frame"
+    <iframe class="teaser-frame" data-scroll="zoom"
             src="https://bds062.github.io/projects/cichlid-social-behavior/teaser/index.html?theme=light"
             title="FSH-TAL animated slide teaser" loading="lazy" allow="fullscreen" allowfullscreen></iframe>
   </div>
@@ -92,8 +80,8 @@
 
 <section class="block" data-tone="glass">
   <div class="prose">
-    <h2>Abstract</h2>
-    <p>Understanding the brain requires studying its observable output: behavior. Cichlid
+    <h2 data-scroll="rise">Abstract</h2>
+    <p data-scroll="rise">Understanding the brain requires studying its observable output: behavior. Cichlid
       fish provide a model system for changing brain function and studying its effect on
       well-defined behaviors. Such experiments require manual annotation of aquarium video
       at real-time playback speed, which is time consuming to generate and produces single
@@ -108,13 +96,13 @@
 
 <section class="block" data-tone="deep">
   <div class="wide">
-    <h2>Dataset</h2>
-    <p class="lede">17 hour-long recordings of paired <em>Astatotilapia burtoni</em> (25&nbsp;FPS)
+    <h2 data-scroll="rise">Dataset</h2>
+    <p class="lede" data-scroll="rise">17 hour-long recordings of paired <em>Astatotilapia burtoni</em> (25&nbsp;FPS)
       give 8,202 point-annotated events across six behaviors: Bite, Lead, Peck, Quiver, Chase,
       and Tilt, each annotated by 4 observers for inter-rater reliability.</p>
 
     <div class="clip-grid-wrap">
-      <div class="clip-grid">
+      <div class="clip-grid" data-scroll="zoom">
         <div class="clip-grid-label"></div>
         <div class="clip-grid-colhead">Bite</div>
         <div class="clip-grid-colhead">Quiver</div>
@@ -136,7 +124,7 @@
         <img src="./static/images/dataset_examples/clip_02308_tracks.gif" alt="Clip 02308 tracked points" loading="lazy">
       </div>
 
-      <div class="clip-grid">
+      <div class="clip-grid" data-scroll="zoom">
         <div class="clip-grid-label"></div>
         <div class="clip-grid-colhead">Tilt</div>
         <div class="clip-grid-colhead">Chase</div>
@@ -159,7 +147,7 @@
       </div>
     </div>
 
-    <figure class="plot-panel">
+    <figure class="plot-panel" data-scroll="zoom">
       <!-- shifted left so the plot frame, not the y-axis label, is centered -->
       <img src="./static/images/behavior_counts.png" alt="Annotated events per behavior class" loading="lazy">
     </figure>
@@ -168,9 +156,9 @@
 
 <section class="block" data-tone="glass">
   <div class="wide">
-    <h2>Method</h2>
-    <img class="figure" src="./static/images/architecture.png" alt="FSH-TAL architecture" loading="lazy">
-    <ol class="stages">
+    <h2 data-scroll="rise">Method</h2>
+    <img class="figure" data-scroll="zoom" src="./static/images/architecture.png" alt="FSH-TAL architecture" loading="lazy">
+    <ol class="stages" data-scroll="rise">
       <li><b>A</b><p>SAM3 segments both fish from the text prompt &ldquo;fish&rdquo; and we track
         18 points per clip across the predicted masks.</p></li>
       <li><b>B</b><p>A few-shot MIL classifier, built on Trokens, fuses DINOv2 features with the
@@ -185,12 +173,12 @@
 
 <section class="block" data-tone="glass">
   <div class="wide">
-    <h2>Results</h2>
-    <p class="lede"><strong>FSH-TAL</strong> reaches 42.8% mAP (IoU 0.1&ndash;0.7), ahead of
+    <h2 data-scroll="rise">Results</h2>
+    <p class="lede" data-scroll="rise"><strong>FSH-TAL</strong> reaches 42.8% mAP (IoU 0.1&ndash;0.7), ahead of
       weakly-supervised (ASM-Loc, HR-Pro) and fully-supervised (ActionFormer) baselines at every
       IoU threshold, despite training on point labels alone.</p>
 
-    <div class="table-wrap">
+    <div class="table-wrap" data-scroll="rise">
       <table>
         <thead>
           <tr>
@@ -214,14 +202,14 @@
     </div>
     <p class="footnote">&dagger; Not including parameters used to generate embeddings.</p>
 
-    <img class="figure" src="./static/images/sota_curve.png" alt="mAP vs. IoU threshold" loading="lazy">
+    <img class="figure" data-scroll="zoom" src="./static/images/sota_curve.png" alt="mAP vs. IoU threshold" loading="lazy">
   </div>
 </section>
 
 <section class="block" id="BibTeX" data-tone="glass">
   <div class="wide">
-    <h2>BibTeX</h2>
-    <pre><code>@inproceedings{srinivasan2026automated,
+    <h2 data-scroll="rise">BibTeX</h2>
+    <pre data-scroll="rise"><code>@inproceedings{srinivasan2026automated,
   title={Automated Temporal Localization of Behavior in Cichlid Fish with Few-Shot Trajectory Tokens},
   author={Bhargav Srinivasan and William Lamousin and Jason Liu and Charles Phan and Ofure Osunbor and Cade McGeehan and Shubh Sharma and Tahir Haroon and Vijay Jayasuriya and Coltan G. Parker and Scott Juntti and Pulkit Kumar and Abhinav Shrivastava},
   booktitle={Third Workshop on Computer Vision for Ecology},
