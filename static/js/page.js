@@ -3,7 +3,10 @@
 //    plays its .reveal transitions (CSS) and updates the nav's theme and
 //    current link. Slides snap into place via CSS scroll-snap, and wheel/keys
 //    page one slide at a time with an eased transition.
-//  - Behavior/view picker on the Examples slide.
+//  - Per-slide extras on activation: videos play (others pause) and
+//    [data-count] numbers count up.
+//  - The two results charts, built from the data below.
+//  - Raw/masks/tracks switch on the Dataset slide.
 //  - Copy-to-clipboard for the BibTeX.
 (function () {
   var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
@@ -17,13 +20,71 @@
     });
   });
 
+  // Slides grouped under another slide's nav link.
+  var NAV_GROUP = { model: 'tracking', perbehavior: 'results' };
+  var activeSlide = null;
+
   function activate(slide) {
+    if (slide === activeSlide) return;
+    activeSlide = slide;
     slides.forEach(function (s) { s.classList.toggle('is-active', s === slide); });
     nav.dataset.theme = slide.classList.contains('theme-dark') ? 'dark' : 'light';
-    // Comparison belongs under Results in the nav.
-    var id = slide.id === 'comparison' ? 'results' : slide.id;
+    var id = NAV_GROUP[slide.id] || slide.id;
     navLinks.forEach(function (a) {
       a.setAttribute('aria-current', a.getAttribute('href') === '#' + id ? 'true' : 'false');
+    });
+    playVideos(slide);
+    countUp(slide);
+  }
+
+  // ---------- Videos: only the active slide's clips play ----------
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  function playVideos(slide) {
+    document.querySelectorAll('video').forEach(function (v) {
+      if (!slide.contains(v)) { v.pause(); return; }
+      // decorative background loops stay still for reduced motion
+      if (reduceMotion.matches && v.classList.contains('bg')) return;
+      try { v.currentTime = 0; } catch (e) {}
+      var p = v.play();
+      if (p && p.catch) p.catch(function () {});
+    });
+  }
+
+  // Clips in a [data-sync] row show the same moment through different stages,
+  // so the others follow the first one whenever they drift apart.
+  setInterval(function () {
+    document.querySelectorAll('[data-sync]').forEach(function (row) {
+      var vids = row.querySelectorAll('video');
+      var master = vids[0];
+      if (!master || master.paused) return;
+      for (var i = 1; i < vids.length; i++) {
+        if (!vids[i].seeking && Math.abs(vids[i].currentTime - master.currentTime) > 0.08) {
+          vids[i].currentTime = master.currentTime;
+        }
+      }
+    });
+  }, 250);
+
+  // ---------- Count-ups: [data-count] numbers tick up as they appear ----------
+  function format(n, el) {
+    if (el.dataset.sep) return Math.round(n).toLocaleString('en-US');
+    return n.toFixed(+(el.dataset.decimals || 0));
+  }
+
+  function countUp(slide) {
+    slide.querySelectorAll('[data-count]').forEach(function (el) {
+      var target = +el.dataset.count;
+      if (reduceMotion.matches) { el.textContent = format(target, el); return; }
+      var start = performance.now() + 350;
+      var run = el.countRun = (el.countRun || 0) + 1;
+      el.textContent = format(0, el);
+      requestAnimationFrame(function tick(now) {
+        if (el.countRun !== run) return;
+        var t = Math.min(1, Math.max(0, (now - start) / 900));
+        el.textContent = format(target * (1 - Math.pow(1 - t, 3)), el);
+        if (t < 1) requestAnimationFrame(tick);
+      });
     });
   }
 
@@ -49,7 +110,6 @@
   var paged = window.matchMedia(
     '(min-width: 901px) and (min-height: 601px) and (hover: hover) and (pointer: fine)'
   );
-  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   var root = document.documentElement;
   var animating = false;
 
@@ -164,58 +224,130 @@
     goTo(index);
   });
 
-  // ---------- Examples picker ----------
-  var clip = document.querySelector('.example-clip');
-  var picker = document.querySelector('.picker');
-  var segmented = document.querySelector('.segmented');
-  if (clip && picker && segmented) {
-    var state = { clip: '07414', name: 'Bite', view: 'raw' };
-    var viewNames = { raw: 'raw footage', masks: 'SAM3 masks', tracks: 'tracked points' };
+  // ---------- Charts ----------
+  var NS = 'http://www.w3.org/2000/svg';
 
-    function src(id, view) {
-      return './static/images/dataset_examples/clip_' + id + '_' + view + '.gif';
+  function el(svg, name, attrs, text) {
+    var e = document.createElementNS(NS, name);
+    Object.keys(attrs).forEach(function (k) { e.setAttribute(k, attrs[k]); });
+    if (text != null) e.textContent = text;
+    svg.appendChild(e);
+    return e;
+  }
+
+  function delay(e, seconds) {
+    e.style.setProperty('--d', seconds + 's');
+    return e;
+  }
+
+  // mAP@IoU (%) at IoU 0.1 … 0.9, from the WACV extended version's supplemental Table 1
+  var IOU = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
+  var SERIES = [
+    { name: 'MIL classifier',  cls: 's-mil',   v: [25.7, 20.7, 12.0, 8.0, 4.6, 2.1, 0.5, 0.3, 0.1] },
+    { name: 'MIL + post-proc', cls: 's-milpp', v: [39.1, 31.4, 20.7, 9.5, 3.1, 0.4, 0.1, 0.0, 0.0] },
+    { name: 'ASM-Loc',         cls: 's-asm',   v: [26.8, 22.2, 16.9, 11.1, 6.1, 2.8, 1.2, 0.4, 0.1] },
+    { name: 'HR-Pro',          cls: 's-hrpro', v: [33.6, 28.4, 21.7, 12.3, 7.8, 3.9, 1.2, 0.5, 0.1] },
+    { name: 'ActionFormer',    cls: 's-af',    v: [35.1, 34.2, 32.2, 29.8, 25.4, 20.6, 14.0, 7.9, 2.4] },
+    { name: 'FSH-TAL (ours)',  cls: 's-ours',  v: [53.3, 50.9, 48.7, 45.5, 41.3, 35.2, 24.7, 14.4, 4.9] }
+  ];
+
+  // Per-behavior AP (%), IoU 0.1–0.7, with annotated events and recordings containing it
+  var BEHAVIORS = [
+    { name: 'Tilt',   ap: 54.1, events: '594',   recs: 11, color: 'var(--c6)' },
+    { name: 'Peck',   ap: 48.8, events: '529',   recs: 11, color: 'var(--c4)' },
+    { name: 'Lead',   ap: 45.6, events: '1,455', recs: 16, color: 'var(--c3)' },
+    { name: 'Quiver', ap: 41.6, events: '1,262', recs: 17, color: 'var(--c5)' },
+    { name: 'Bite',   ap: 38.9, events: '3,516', recs: 15, color: 'var(--c1)' },
+    { name: 'Chase',  ap: 36.8, events: '846',   recs: 12, color: 'var(--c2)' }
+  ];
+
+  function buildMapChart(svg) {
+    var L = 58, R = 706, T = 18, B = 346;
+    function X(i) { return L + (IOU[i] - 0.1) / 0.8 * (R - L); }
+    function Y(v) { return B - v / 60 * (B - T); }
+    for (var v = 0; v <= 60; v += 10) {
+      el(svg, 'line', { x1: L, x2: R, y1: Y(v), y2: Y(v), class: 'grid' });
+      el(svg, 'text', { x: L - 10, y: Y(v) + 5, 'text-anchor': 'end', class: 'tick' }, v);
     }
-
-    function show() {
-      var next = src(state.clip, state.view);
-      if (clip.getAttribute('src') === next) return;
-      clip.classList.add('is-swapping');
-      setTimeout(function () {
-        clip.onload = clip.onerror = function () { clip.classList.remove('is-swapping'); };
-        clip.src = next;
-        clip.alt = state.name + ', ' + viewNames[state.view];
-      }, 200);
-    }
-
-    function press(group, button) {
-      group.querySelectorAll('button').forEach(function (b) {
-        b.setAttribute('aria-pressed', b === button ? 'true' : 'false');
-      });
-    }
-
-    picker.addEventListener('click', function (e) {
-      var b = e.target.closest('button');
-      if (!b) return;
-      press(picker, b);
-      state.clip = b.dataset.clip;
-      state.name = b.textContent;
-      show();
+    IOU.forEach(function (t, i) {
+      el(svg, 'text', { x: X(i), y: B + 22, 'text-anchor': 'middle', class: 'tick' }, t.toFixed(1));
     });
+    el(svg, 'text', { x: (L + R) / 2, y: B + 48, 'text-anchor': 'middle', class: 'axis' }, 'IoU threshold');
+    el(svg, 'text', { x: 14, y: (T + B) / 2, 'text-anchor': 'middle', class: 'axis',
+                      transform: 'rotate(-90 14 ' + (T + B) / 2 + ')' }, 'mAP (%)');
+    SERIES.forEach(function (s, k) {
+      var d = s.v.map(function (v, i) { return (i ? 'L' : 'M') + X(i).toFixed(1) + ',' + Y(v).toFixed(1); }).join(' ');
+      var ours = s.cls === 's-ours';
+      var path = el(svg, 'path', { d: d, class: 'line ' + s.cls + (ours ? ' draw' : ' pop') });
+      el(path, 'title', {}, s.name + ': ' + s.v.map(function (v, i) {
+        return 'IoU ' + IOU[i].toFixed(1) + ' ' + v.toFixed(1) + '%';
+      }).join(', '));
+      if (ours) {
+        path.style.setProperty('--len', Math.ceil(path.getTotalLength() + 2));
+        path.style.setProperty('--dur', '1.4s');
+        delay(path, 1.4);
+      } else {
+        delay(path, 0.4 + k * 0.15);
+      }
+    });
+    SERIES[5].v.forEach(function (v, i) {
+      var dot = delay(el(svg, 'circle', { cx: X(i), cy: Y(v), r: 5, class: 'dot pop' }), 1.5 + i * 0.14);
+      el(dot, 'title', {}, 'FSH-TAL, IoU ' + IOU[i].toFixed(1) + ': ' + v.toFixed(1) + '% mAP');
+    });
+    delay(el(svg, 'text', { x: X(0) + 10, y: Y(53.3) - 12, class: 'dlabel ours pop' }, 'FSH-TAL (ours)'), 2.6);
+    delay(el(svg, 'text', { x: X(3) + 10, y: Y(29.8) - 12, class: 'dlabel pop' }, 'ActionFormer'), 1.3);
+  }
 
+  function buildApChart(svg) {
+    var L = 60, R = 710, T = 30, B = 320, MAX = 60;
+    var band = (R - L) / BEHAVIORS.length, w = 76;
+    function Y(v) { return B - v / MAX * (B - T); }
+    for (var v = 0; v <= MAX; v += 20) {
+      el(svg, 'line', { x1: L, x2: R, y1: Y(v), y2: Y(v), class: 'grid' });
+      el(svg, 'text', { x: L - 10, y: Y(v) + 5, 'text-anchor': 'end', class: 'tick' }, v);
+    }
+    el(svg, 'text', { x: 16, y: (T + B) / 2, 'text-anchor': 'middle', class: 'axis',
+                      transform: 'rotate(-90 16 ' + (T + B) / 2 + ')' }, 'AP (%)');
+    BEHAVIORS.forEach(function (b, i) {
+      var cx = L + band * (i + 0.5), x = cx - w / 2, y = Y(b.ap), r = 4;
+      // rounded top corners only; the bar sits square on the baseline
+      var d = 'M' + x + ',' + B + 'V' + (y + r) + 'Q' + x + ',' + y + ' ' + (x + r) + ',' + y +
+              'H' + (x + w - r) + 'Q' + (x + w) + ',' + y + ' ' + (x + w) + ',' + (y + r) + 'V' + B + 'Z';
+      var bar = delay(el(svg, 'path', { d: d, fill: b.color, class: 'grow' }), 0.4 + i * 0.12);
+      el(bar, 'title', {}, b.name + ': ' + b.ap.toFixed(1) + '% AP, ' + b.events + ' events in ' + b.recs + ' recordings');
+      delay(el(svg, 'text', { x: cx, y: y - 10, 'text-anchor': 'middle', class: 'bar-val pop' }, b.ap.toFixed(1)), 1.2 + i * 0.08);
+      el(svg, 'text', { x: cx, y: B + 28, 'text-anchor': 'middle', class: 'bar-name' }, b.name);
+      el(svg, 'text', { x: cx, y: B + 50, 'text-anchor': 'middle', class: 'tick' }, b.events + ' · ' + b.recs);
+    });
+    el(svg, 'line', { x1: L, x2: R, y1: B, y2: B, class: 'base' });
+    el(svg, 'text', { x: (L + R) / 2, y: B + 88, 'text-anchor': 'middle', class: 'sub' },
+       'annotated events · recordings containing the behavior');
+  }
+
+  var mapChart = document.getElementById('map-chart');
+  var apChart = document.getElementById('ap-chart');
+  if (mapChart) buildMapChart(mapChart);
+  if (apChart) buildApChart(apChart);
+
+  // ---------- Dataset: raw / masks / tracks ----------
+  var segmented = document.querySelector('#dataset .segmented');
+  if (segmented) {
+    var tiles = Array.prototype.slice.call(document.querySelectorAll('#dataset .tile'));
     segmented.addEventListener('click', function (e) {
       var b = e.target.closest('button');
-      if (!b) return;
-      press(segmented, b);
-      state.view = b.dataset.view;
-      show();
-    });
-
-    // Warm the cache so switching is instant once the page has loaded.
-    window.addEventListener('load', function () {
-      picker.querySelectorAll('button').forEach(function (b) {
-        ['raw', 'masks', 'tracks'].forEach(function (view) {
-          new Image().src = src(b.dataset.clip, view);
-        });
+      if (!b || b.getAttribute('aria-pressed') === 'true') return;
+      segmented.querySelectorAll('button').forEach(function (x) {
+        x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
+      });
+      tiles.forEach(function (tile) {
+        var video = tile.querySelector('video');
+        video.classList.add('is-swapping');
+        setTimeout(function () {
+          video.src = './static/media/beh_' + tile.dataset.behavior + '_' + b.dataset.view + '.mp4';
+          video.addEventListener('loadeddata', function () { video.classList.remove('is-swapping'); }, { once: true });
+          var p = video.play();
+          if (p && p.catch) p.catch(function () {});
+        }, 200);
       });
     });
   }

@@ -25,16 +25,16 @@
     <symbol id="icon-github" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></symbol>
 </svg>
 
+
 <nav class="globalnav" aria-label="Sections">
   <div class="globalnav-inner">
     <a class="globalnav-brand" href="#top">FSH-TAL</a>
     <ul class="globalnav-links">
-      <li><a href="#overview">Overview</a></li>
-      <li><a href="#abstract">Abstract</a></li>
+      <li><a href="#problem">Problem</a></li>
       <li><a href="#dataset">Dataset</a></li>
-      <li><a href="#examples">Examples</a></li>
-      <li><a href="#method">Method</a></li>
+      <li><a href="#tracking">Method</a></li>
       <li><a href="#results">Results</a></li>
+      <li><a href="#links">Links</a></li>
       <li><a href="#cite">Cite</a></li>
     </ul>
     <div class="globalnav-actions">
@@ -49,13 +49,20 @@
 
 <main>
 
-<!-- Every .slide fills the screen and is a scroll-snap point. Text sits in the
-     left 40%, media in the right 60%. Elements marked .reveal animate in when
-     their slide becomes active (see static/js/page.js). -->
+<!-- One .slide per slide of the animated teaser. Every .slide fills the screen;
+     text sits in the left 40%, media in the right 60% (the title and closing
+     slides are full-bleed video instead). .reveal elements slide in when their
+     slide becomes active; .pop / .draw / .grow / .growx are figure animations
+     timed by --d (seconds). Videos play only while their slide is active. See
+     static/js/page.js. -->
 
-<section class="slide theme-light" id="top" aria-label="Title">
+<section class="slide slide-video theme-dark" id="top" aria-label="Title">
+  <video class="bg" src="./static/media/title_bg.mp4" poster="./static/media/title_poster.jpg"
+         muted loop playsinline autoplay preload="auto" aria-hidden="true"></video>
+  <div class="shade"></div>
   <div class="slide-inner">
     <div class="copy">
+      <p class="eyebrow reveal">WACV 2027 <span>&middot; workshop version at CV4Ecology, ECCV 2026</span></p>
       <h1 class="reveal">Automated Temporal Localization of Behavior in Cichlid Fish with
         Few&#8209;Shot Trajectory Tokens</h1>
       <p class="authors reveal">
@@ -75,9 +82,8 @@
         <a target="_blank" href="https://www.cs.umd.edu/~abhinav/">Abhinav Shrivastava</a><sup>1</sup>
       </p>
       <p class="fineprint reveal">
-        <sup>1</sup>Dept.&nbsp;of Computer Science, University of Maryland<br>
-        <sup>2</sup>Dept.&nbsp;of Biology, University of Maryland<br>
-        &ast;&nbsp;Equal contribution. &dagger;&nbsp;Equal contribution.
+        University of Maryland, College Park &middot; <sup>1</sup>Dept.&nbsp;of Computer Science
+        &middot; <sup>2</sup>Dept.&nbsp;of Biology &middot; &ast;&nbsp;&dagger;&nbsp;Equal contribution
       </p>
       <div class="actions reveal">
         <a class="button" target="_blank"
@@ -86,118 +92,149 @@
         <a class="button button-secondary" target="_blank" href="https://huggingface.co/datasets/bds062/cichlid-behavior-pairs"><span class="emoji" aria-hidden="true">&#129303;</span>Data</a>
         <a class="button button-secondary" target="_blank" href="https://huggingface.co/bds062/fsh-tal"><span class="emoji" aria-hidden="true">&#129303;</span>Models</a>
       </div>
-      <img class="venue reveal" src="./static/images/wacv_logo.jpeg" alt="WACV 2027, Orlando, Florida" width="150">
     </div>
-    <figure class="media reveal">
-      <img src="./static/images/dataset_examples/clip_00019_raw.gif" alt="Two cichlids in an aquarium tank, raw footage">
-    </figure>
   </div>
 </section>
 
-<section class="slide theme-dark" id="overview" aria-label="Overview">
+<section class="slide theme-light" id="problem" aria-label="The problem">
   <div class="slide-inner">
     <div class="copy">
-      <p class="eyebrow reveal">TL;DR</p>
-      <h2 class="reveal">Point-supervised temporal action localization for cichlid behavior,
-        trained only on point annotations.</h2>
-    </div>
-    <figure class="media reveal">
-      <iframe class="teaser-frame"
-              src="https://bds062.github.io/projects/cichlid-social-behavior/teaser/index.html?theme=light"
-              title="FSH-TAL animated slide teaser" loading="lazy" allow="fullscreen"></iframe>
-    </figure>
-  </div>
-</section>
-
-<section class="slide theme-gray" id="abstract" aria-label="Abstract">
-  <div class="slide-inner">
-    <div class="copy">
-      <p class="eyebrow reveal">Abstract</p>
-      <p class="body-text reveal">Understanding the brain requires studying its observable output:
-        behavior. Cichlid fish provide a model system for changing brain function and studying its
-        effect on well-defined behaviors. Such experiments require manual annotation of aquarium
-        video at real-time playback speed, which is time consuming to generate and produces single
-        time points that lack the temporal context of the underlying behavior. We provide a
-        benchmarking dataset for animal behavior containing &sim;17 hours of annotated cichlid
-        footage, and propose <strong>FSH-TAL</strong>, a temporal localization model that learns
-        from point annotations and predicts behavior-specific temporal segments in full-length
-        videos. On our dataset, FSH-TAL reaches state-of-the-art mAP (42.8% averaged across IoU
-        0.1&ndash;0.7).</p>
-    </div>
-    <figure class="media reveal">
-      <img src="./static/images/dataset_examples/clip_00852_raw.gif" alt="Two cichlids in an aquarium tank, raw footage" loading="lazy">
-    </figure>
-  </div>
-</section>
-
-<section class="slide theme-light" id="dataset" aria-label="Dataset">
-  <div class="slide-inner">
-    <div class="copy">
-      <p class="eyebrow reveal">Dataset</p>
-      <h2 class="reveal">17 hours of annotated cichlid footage.</h2>
-      <p class="body-text reveal">17 hour-long recordings of paired <em>Astatotilapia burtoni</em>
-        (25&nbsp;FPS) give 8,202 point-annotated events across six behaviors: Bite, Lead, Peck,
-        Quiver, Chase, and Tilt, each annotated by 4 observers for inter-rater reliability.</p>
+      <p class="eyebrow reveal">The problem</p>
+      <h2 class="reveal">Behavioral experiments are limited by how fast experts can watch video.</h2>
+      <ul class="points">
+        <li class="reveal"><strong>Experts annotate at real-time playback,</strong> hour by hour, in BORIS.</li>
+        <li class="reveal"><strong>Four observers per recording,</strong> reconciled by inter-rater reliability.</li>
+        <li class="reveal"><strong>Each label is a single time point.</strong> No start, no end.</li>
+      </ul>
       <dl class="stats reveal">
-        <div><dt>8,202</dt><dd>point-annotated events</dd></div>
-        <div><dt>6</dt><dd>behaviors</dd></div>
-        <div><dt>4</dt><dd>observers per recording</dd></div>
+        <div><dt data-count="17">17</dt><dd>hour-long recordings</dd></div>
+        <div><dt data-count="8202" data-sep="1">8,202</dt><dd>expert point annotations</dd></div>
+        <div><dt><span data-count="67.7" data-decimals="1">67.7</span>%</dt><dd>fall within 2&nbsp;s of another annotation</dd></div>
       </dl>
     </div>
-    <figure class="media media-plain reveal">
-      <img src="./static/images/behavior_counts.png" alt="Annotated events per behavior class" loading="lazy">
+    <figure class="media media-stack">
+      <div class="clip reveal" style="--d:.15s">
+        <video src="./static/media/stage_raw.mp4" muted loop playsinline preload="auto"></video>
+        <span class="clip-label">Raw recording &middot; 25 fps</span>
+      </div>
+      <svg class="timeline reveal" style="--d:.3s" viewBox="0 0 640 330" preserveAspectRatio="xMidYMid meet"
+           role="img" aria-label="Point annotations on a 60 second timeline above the behavior segments FSH-TAL predicts for them">
+        <text x="20" y="26" class="cap">Expert point annotations</text>
+        <text x="20" y="48" class="sub">a timestamp and a class</text>
+        <line x1="20" y1="132" x2="620" y2="132" class="base"/>
+        <text x="20" y="154" class="tick">0 s</text>
+        <text x="620" y="154" class="tick" text-anchor="end">60 s</text>
+        <g stroke-width="3" stroke-linecap="round">
+          <line class="pop" style="--d:.7s"  x1="65"  y1="82" x2="65"  y2="128" stroke="var(--c5)"/>
+          <line class="pop" style="--d:.76s" x1="73"  y1="82" x2="73"  y2="128" stroke="var(--c3)"/>
+          <line class="pop" style="--d:.82s" x1="80"  y1="82" x2="80"  y2="128" stroke="var(--c3)"/>
+          <line class="pop" style="--d:.92s" x1="200" y1="82" x2="200" y2="128" stroke="var(--c6)"/>
+          <line class="pop" style="--d:.97s" x1="206" y1="82" x2="206" y2="128" stroke="var(--c4)"/>
+          <line class="pop" style="--d:1.02s" x1="212" y1="82" x2="212" y2="128" stroke="var(--c6)"/>
+          <line class="pop" style="--d:1.07s" x1="219" y1="82" x2="219" y2="128" stroke="var(--c4)"/>
+          <line class="pop" style="--d:1.12s" x1="225" y1="82" x2="225" y2="128" stroke="var(--c6)"/>
+          <line class="pop" style="--d:1.22s" x1="330" y1="82" x2="330" y2="128" stroke="var(--c1)"/>
+          <line class="pop" style="--d:1.32s" x1="420" y1="82" x2="420" y2="128" stroke="var(--c2)"/>
+          <line class="pop" style="--d:1.37s" x1="427" y1="82" x2="427" y2="128" stroke="var(--c1)"/>
+          <line class="pop" style="--d:1.42s" x1="435" y1="82" x2="435" y2="128" stroke="var(--c2)"/>
+          <line class="pop" style="--d:1.47s" x1="441" y1="82" x2="441" y2="128" stroke="var(--c1)"/>
+          <line class="pop" style="--d:1.57s" x1="560" y1="82" x2="560" y2="128" stroke="var(--c5)"/>
+          <line class="pop" style="--d:1.62s" x1="572" y1="82" x2="572" y2="128" stroke="var(--c3)"/>
+        </g>
+        <text x="20" y="196" class="cap pop" style="--d:1.8s">FSH-TAL output</text>
+        <text x="20" y="218" class="sub pop" style="--d:1.8s">start, end, and class, including overlaps</text>
+        <g>
+          <rect class="growx" style="--d:1.9s"  x="58"  y="234" width="30" height="16" rx="3" fill="var(--c5)"/>
+          <rect class="growx" style="--d:1.96s" x="68"  y="256" width="40" height="16" rx="3" fill="var(--c3)"/>
+          <rect class="growx" style="--d:2.02s" x="194" y="234" width="38" height="16" rx="3" fill="var(--c6)"/>
+          <rect class="growx" style="--d:2.08s" x="200" y="256" width="28" height="16" rx="3" fill="var(--c4)"/>
+          <rect class="growx" style="--d:2.14s" x="321" y="234" width="20" height="16" rx="3" fill="var(--c1)"/>
+          <rect class="growx" style="--d:2.2s"  x="412" y="234" width="36" height="16" rx="3" fill="var(--c2)"/>
+          <rect class="growx" style="--d:2.26s" x="420" y="256" width="32" height="16" rx="3" fill="var(--c1)"/>
+          <rect class="growx" style="--d:2.32s" x="551" y="234" width="31" height="16" rx="3" fill="var(--c5)"/>
+          <rect class="growx" style="--d:2.38s" x="565" y="256" width="40" height="16" rx="3" fill="var(--c3)"/>
+        </g>
+        <g class="legend-row pop" style="--d:.5s">
+          <circle cx="24"  cy="314" r="5.5" fill="var(--c1)"/><text x="35"  y="319">Bite</text>
+          <circle cx="104" cy="314" r="5.5" fill="var(--c2)"/><text x="115" y="319">Chase</text>
+          <circle cx="196" cy="314" r="5.5" fill="var(--c3)"/><text x="207" y="319">Lead</text>
+          <circle cx="282" cy="314" r="5.5" fill="var(--c4)"/><text x="293" y="319">Peck</text>
+          <circle cx="366" cy="314" r="5.5" fill="var(--c5)"/><text x="377" y="319">Quiver</text>
+          <circle cx="464" cy="314" r="5.5" fill="var(--c6)"/><text x="475" y="319">Tilt</text>
+        </g>
+      </svg>
     </figure>
   </div>
 </section>
 
-<section class="slide theme-dark" id="examples" aria-label="Examples">
+<section class="slide theme-dark" id="dataset" aria-label="The dataset">
   <div class="slide-inner">
     <div class="copy">
-      <p class="eyebrow reveal">Examples</p>
-      <h2 class="reveal">Six behaviors, three views.</h2>
-      <p class="body-text reveal">Each clip is shown as raw footage, with SAM3 masks, and with
-        tracked points.</p>
-
-      <div class="picker reveal" role="group" aria-label="Behavior">
-        <button type="button" data-clip="07414" aria-pressed="true">Bite</button>
-        <button type="button" data-clip="00019" aria-pressed="false">Quiver</button>
-        <button type="button" data-clip="02308" aria-pressed="false">Lead</button>
-        <button type="button" data-clip="00527" aria-pressed="false">Tilt</button>
-        <button type="button" data-clip="00852" aria-pressed="false">Chase</button>
-        <button type="button" data-clip="00663" aria-pressed="false">Peck</button>
-      </div>
-
+      <p class="eyebrow reveal">The dataset</p>
+      <h2 class="reveal">Six short, visually similar, often overlapping behaviors.</h2>
+      <p class="body-text reveal">17 hour-long recordings of <em>Astatotilapia burtoni</em> pairs,
+        side view, 25&nbsp;fps.</p>
       <div class="segmented reveal" role="group" aria-label="View">
-        <button type="button" data-view="raw" aria-pressed="true">Raw</button>
-        <button type="button" data-view="masks" aria-pressed="false">SAM3 masks</button>
+        <button type="button" data-view="raw" aria-pressed="false">Raw</button>
+        <button type="button" data-view="masks" aria-pressed="true">SAM3 masks</button>
         <button type="button" data-view="tracks" aria-pressed="false">Tracks</button>
       </div>
     </div>
-    <figure class="media reveal">
-      <img class="example-clip" src="./static/images/dataset_examples/clip_07414_raw.gif"
-           alt="Bite, raw footage" loading="lazy">
+    <figure class="media behavior-grid">
+      <div class="tile reveal" style="--d:.15s; --c:var(--c1)" data-behavior="bite"><video src="./static/media/beh_bite_masks.mp4" muted loop playsinline preload="auto"></video><p><i></i><b>Bite</b><span>3,516 events</span></p></div>
+      <div class="tile reveal" style="--d:.25s; --c:var(--c2)" data-behavior="chase"><video src="./static/media/beh_chase_masks.mp4" muted loop playsinline preload="auto"></video><p><i></i><b>Chase</b><span>846 events</span></p></div>
+      <div class="tile reveal" style="--d:.35s; --c:var(--c3)" data-behavior="lead"><video src="./static/media/beh_lead_masks.mp4" muted loop playsinline preload="auto"></video><p><i></i><b>Lead</b><span>1,455 events</span></p></div>
+      <div class="tile reveal" style="--d:.45s; --c:var(--c4)" data-behavior="peck"><video src="./static/media/beh_peck_masks.mp4" muted loop playsinline preload="auto"></video><p><i></i><b>Peck</b><span>529 events</span></p></div>
+      <div class="tile reveal" style="--d:.55s; --c:var(--c5)" data-behavior="quiver"><video src="./static/media/beh_quiver_masks.mp4" muted loop playsinline preload="auto"></video><p><i></i><b>Quiver</b><span>1,262 events</span></p></div>
+      <div class="tile reveal" style="--d:.65s; --c:var(--c6)" data-behavior="tilt"><video src="./static/media/beh_tilt_masks.mp4" muted loop playsinline preload="auto"></video><p><i></i><b>Tilt</b><span>594 events</span></p></div>
     </figure>
   </div>
 </section>
 
-<section class="slide theme-light" id="method" aria-label="Method">
+<section class="slide theme-gray" id="tracking" aria-label="Stage A: object-grounded trajectories">
   <div class="slide-inner">
     <div class="copy">
-      <p class="eyebrow reveal">Method</p>
-      <h2 class="reveal">FSH-TAL has three stages.</h2>
-      <ol class="stages">
-        <li class="reveal"><span>A</span>SAM3 segments both fish from the text prompt &ldquo;fish&rdquo;
-          and we track 18 points per clip across the predicted masks.</li>
-        <li class="reveal"><span>B</span>A few-shot MIL classifier, built on Trokens, fuses DINOv2
-          features with the tracked trajectories, trained in 5-way 3-shot episodes so co-occurring
-          behaviors share a clip.</li>
-        <li class="reveal"><span>C</span>FSH-TAL trains a temporal transformer on the frozen MIL
-          embeddings at 4&nbsp;FPS, predicting behavior, timespan, and centerness, decoded with
-          greedy NMS per behavior.</li>
-      </ol>
+      <p class="eyebrow reveal">Stage A <span>&middot; object-grounded trajectories</span></p>
+      <h2 class="reveal">Segmentation based keypoint tracking.</h2>
+      <p class="body-text reveal">SAM3 segments both fish in every frame, and points are tracked
+        across the masks to give each fish a trajectory.</p>
+      <p class="callout reveal"><strong>No skeleton or keypoint labels provided.</strong></p>
+    </div>
+    <figure class="media pipeline">
+      <p class="reveal" style="--d:.15s"><b>Raw clip</b></p>
+      <p class="reveal" style="--d:.65s"><b>SAM3 segmentation</b></p>
+      <p class="reveal" style="--d:1.15s"><b>Point tracking</b></p>
+      <div class="sync-row" data-sync>
+        <div class="clip reveal" style="--d:.15s"><video src="./static/media/beh_lead_raw.mp4" muted loop playsinline preload="auto"></video><span class="clip-label">Lead</span></div>
+        <div class="clip reveal" style="--d:.65s"><video src="./static/media/beh_lead_masks.mp4" muted loop playsinline preload="auto"></video></div>
+        <div class="clip reveal" style="--d:1.15s"><video src="./static/media/beh_lead_tracks.mp4" muted loop playsinline preload="auto"></video></div>
+      </div>
+      <div class="sync-row" data-sync>
+        <div class="clip reveal" style="--d:.3s"><video src="./static/media/beh_chase_raw.mp4" muted loop playsinline preload="auto"></video><span class="clip-label">Chase</span></div>
+        <div class="clip reveal" style="--d:.8s"><video src="./static/media/beh_chase_masks.mp4" muted loop playsinline preload="auto"></video></div>
+        <div class="clip reveal" style="--d:1.3s"><video src="./static/media/beh_chase_tracks.mp4" muted loop playsinline preload="auto"></video></div>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<section class="slide theme-light" id="model" aria-label="The model">
+  <div class="slide-inner">
+    <div class="copy">
+      <p class="eyebrow reveal">The model <span>&middot; FSH-TAL</span></p>
+      <h2 class="reveal">A few-shot classifier feeds a point-supervised localizer.</h2>
+      <dl class="cards">
+        <div class="reveal"><dt>Few-shot MIL classifier</dt>
+          <dd>Trajectory-aligned tokens at the tracked points fused with motion features, trained
+            in few-shot episodes.</dd></div>
+        <div class="reveal"><dt>Point-supervised localizer</dt>
+          <dd>Behavior, timespan, and centerness heads, trained on &plusmn;2&nbsp;s pseudo-segments
+            around each point annotation.</dd></div>
+      </dl>
     </div>
     <figure class="media media-plain reveal">
-      <img src="./static/images/architecture.png" alt="FSH-TAL architecture" loading="lazy">
+      <img src="./static/media/architecture.webp" width="1400" height="873" loading="lazy"
+           alt="FSH-TAL architecture: SAM3 masks and point tracking, a multiple-instance few-shot classifier on trajectory-aligned tokens, and a temporal localizer with dilated convolutions, transformer blocks, and three decoder heads">
     </figure>
   </div>
 </section>
@@ -206,52 +243,66 @@
   <div class="slide-inner">
     <div class="copy">
       <p class="eyebrow reveal">Results</p>
-      <h2 class="headline-number reveal">42.8% mAP</h2>
-      <p class="body-text reveal"><strong>FSH-TAL</strong> reaches 42.8% mAP (IoU 0.1&ndash;0.7),
-        ahead of weakly-supervised (ASM-Loc, HR-Pro) and fully-supervised (ActionFormer) baselines
-        at every IoU threshold, despite training on point labels alone.</p>
+      <h2 class="reveal">State of the art at every IoU threshold over varied supervision.</h2>
+      <p class="stat-label reveal">Average mAP, IoU 0.1&ndash;0.7</p>
+      <p class="headline-number reveal"><span data-count="42.8" data-decimals="1">42.8</span><small>%</small></p>
+      <p class="body-text reveal"><strong>+15.5 points</strong> over ActionFormer, fully supervised
+        on the same pseudo-segments.</p>
+      <p class="fineprint reveal">5-fold cross-validation over all 17 held-out recordings.</p>
     </div>
-    <figure class="media media-plain reveal">
-      <img src="./static/images/sota_curve.png" alt="mAP vs. IoU threshold" loading="lazy">
+    <figure class="media chart reveal">
+      <svg id="map-chart" viewBox="0 0 720 400" role="img"
+           aria-label="Mean average precision versus IoU threshold for six methods; FSH-TAL is highest at every threshold"></svg>
+      <figcaption class="legend" aria-hidden="true">
+        <span><svg viewBox="0 0 40 12"><line x1="2" y1="6" x2="38" y2="6" class="s-mil"/></svg>MIL classifier <b>10.5</b></span>
+        <span><svg viewBox="0 0 40 12"><line x1="2" y1="6" x2="38" y2="6" class="s-milpp"/></svg>MIL + post-processing <b>14.9</b></span>
+        <span><svg viewBox="0 0 40 12"><line x1="2" y1="6" x2="38" y2="6" class="s-asm"/></svg>ASM-Loc (weak) <b>12.4</b></span>
+        <span><svg viewBox="0 0 40 12"><line x1="2" y1="6" x2="38" y2="6" class="s-hrpro"/></svg>HR-Pro (point) <b>15.6</b></span>
+        <span><svg viewBox="0 0 40 12"><line x1="2" y1="6" x2="38" y2="6" class="s-af"/></svg>ActionFormer (full) <b>27.3</b></span>
+        <span class="ours"><svg viewBox="0 0 40 12"><line x1="2" y1="6" x2="38" y2="6" class="s-ours"/></svg>FSH-TAL (ours) <b>42.8</b></span>
+      </figcaption>
     </figure>
   </div>
 </section>
 
-<section class="slide theme-light" id="comparison" aria-label="Comparison with baselines">
+<section class="slide theme-light" id="perbehavior" aria-label="Per-behavior average precision">
   <div class="slide-inner">
     <div class="copy">
-      <p class="eyebrow reveal">Comparison</p>
-      <h2 class="reveal">Ahead at every IoU threshold.</h2>
-      <p class="body-text reveal">Compared with weakly-supervised and fully-supervised baselines,
-        while training on point labels alone.</p>
-      <p class="fineprint reveal">&dagger; Not including parameters used to generate embeddings.</p>
+      <p class="eyebrow reveal">Per-behavior average precision</p>
+      <h2 class="reveal">Well-defined behaviors localize best, even when they are rare.</h2>
+      <p class="body-text reveal">Precisely defined behaviors beat loosely defined ones:
+        <strong>Tilt</strong> and <strong>Peck</strong> are rare, yet localize best.</p>
+      <p class="body-text reveal">FSH-TAL beats every baseline on all six behaviors.</p>
+      <p class="fineprint reveal">IoU 0.1&ndash;0.7, over the recordings that contain each behavior.</p>
     </div>
-    <figure class="media media-plain reveal">
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th rowspan="2" class="left">Method</th>
-              <th rowspan="2">#Params</th>
-              <th colspan="5">mAP@IoU (%)</th>
-            </tr>
-            <tr><th>0.1</th><th>0.3</th><th>0.5</th><th>0.7</th><th>Avg</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="left">MIL classifier</td><td>16.0M</td><td>25.7</td><td>12.0</td><td>4.6</td><td>0.5</td><td>10.5</td></tr>
-            <tr><td class="left">MIL + post-proc</td><td>16.0M</td><td>39.1</td><td>20.7</td><td>3.1</td><td>0.1</td><td>14.9</td></tr>
-            <tr><td class="left">ASM-Loc</td><td>1.8M&dagger;</td><td>26.8</td><td>16.9</td><td>6.1</td><td>1.2</td><td>12.4</td></tr>
-            <tr><td class="left">HR-Pro</td><td>23.2M</td><td>33.6</td><td>21.7</td><td>7.8</td><td>1.2</td><td>15.6</td></tr>
-            <tr><td class="left">ActionFormer</td><td>27.3M&dagger;</td><td>35.1</td><td>32.2</td><td>25.4</td><td>14.0</td><td>27.3</td></tr>
-            <tr class="best-row"><td class="left">FSH-TAL (ours)</td><td>15.8M&dagger;</td><td>53.3</td><td>48.7</td><td>41.3</td><td>24.7</td><td>42.8</td></tr>
-          </tbody>
-        </table>
-      </div>
+    <figure class="media chart reveal">
+      <svg id="ap-chart" viewBox="0 0 720 420" role="img"
+           aria-label="Average precision per behavior: Tilt 54.1, Peck 48.8, Lead 45.6, Quiver 41.6, Bite 38.9, Chase 36.8"></svg>
     </figure>
   </div>
 </section>
 
-<section class="slide theme-dark" id="cite" aria-label="Citation">
+<section class="slide slide-video theme-dark" id="links" aria-label="Paper, code, and data">
+  <video class="bg" src="./static/media/collage_bg.mp4" poster="./static/media/collage_poster.jpg"
+         muted loop playsinline preload="auto" aria-hidden="true"></video>
+  <div class="shade"></div>
+  <div class="slide-inner">
+    <div class="copy">
+      <p class="brand reveal"><b>FSH</b>-TAL</p>
+      <p class="lede reveal">8,202 expert point annotations over 17 hours of cichlid footage, and a
+        localizer that turns them into temporal behavior segments.</p>
+      <ul class="link-list">
+        <li class="reveal"><a target="_blank" rel="noopener" href="https://bds062.github.io/projects/cichlid-social-behavior/assets/Fish_Behavior_extended_version.pdf"><span>Paper</span>WACV 2027 (PDF)</a></li>
+        <li class="reveal"><a target="_blank" rel="noopener" href="https://bds062.github.io/projects/cichlid-social-behavior/"><span>Project</span>bds062.github.io/projects/cichlid-social-behavior</a></li>
+        <li class="reveal"><a target="_blank" rel="noopener" href="https://github.com/bds062/FSH-TAL"><span>Code</span>github.com/bds062/FSH-TAL</a></li>
+        <li class="reveal"><a target="_blank" rel="noopener" href="https://huggingface.co/datasets/bds062/cichlid-behavior-pairs"><span>Dataset</span>huggingface.co/datasets/bds062/cichlid-behavior-pairs</a></li>
+        <li class="reveal"><a target="_blank" rel="noopener" href="https://huggingface.co/bds062/fsh-tal"><span>Models</span>huggingface.co/bds062/fsh-tal</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="slide theme-gray" id="cite" aria-label="Citation">
   <div class="slide-inner">
     <div class="copy">
       <p class="eyebrow reveal">Cite</p>
