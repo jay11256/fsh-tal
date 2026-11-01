@@ -16,14 +16,3 @@ If you find this work useful, please cite:
   year      = {2026}
 }
 ```
-
-## Local preview
-```
-python3 -m http.server -d . 8000
-```
-then open `http://localhost:8000`.
-
-## Credits
-Built with the [Nerfies project page template](https://github.com/nerfies/nerfies.github.io)
-(Bulma + vanilla JS), licensed under
-[CC BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/).
