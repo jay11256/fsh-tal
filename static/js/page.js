@@ -316,25 +316,27 @@
     return e;
   }
 
-  // mAP@IoU (%) at IoU 0.1 … 0.9, from the WACV extended version's supplemental Table 1
+  // mAP@IoU (%) from the paper's main results table, IoU 0.1–0.9 (the
+  // averages, IoU 0.1–0.7, are in the legend in index.html)
   var IOU = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
   var SERIES = [
-    { name: 'MIL classifier',  cls: 's-mil',   v: [25.7, 20.7, 12.0, 8.0, 4.6, 2.1, 0.5, 0.3, 0.1] },
-    { name: 'MIL + post-proc', cls: 's-milpp', v: [39.1, 31.4, 20.7, 9.5, 3.1, 0.4, 0.1, 0.0, 0.0] },
-    { name: 'ASM-Loc',         cls: 's-asm',   v: [26.8, 22.2, 16.9, 11.1, 6.1, 2.8, 1.2, 0.4, 0.1] },
-    { name: 'HR-Pro',          cls: 's-hrpro', v: [33.6, 28.4, 21.7, 12.3, 7.8, 3.9, 1.2, 0.5, 0.1] },
-    { name: 'ActionFormer',    cls: 's-af',    v: [35.1, 34.2, 32.2, 29.8, 25.4, 20.6, 14.0, 7.9, 2.4] },
-    { name: 'FSH-TAL (ours)',  cls: 's-ours',  v: [53.3, 50.9, 48.7, 45.5, 41.3, 35.2, 24.7, 14.4, 4.9] }
+    { name: 'MIL classifier',  cls: 's-mil',   v: [29.9, 23.5, 14.7, 9.6, 5.4, 2.2, 0.2, 0.1, 0.0] },
+    { name: 'MIL + post-proc', cls: 's-milpp', v: [44.3, 33.3, 20.7, 10.2, 2.6, 0.6, 0.2, 0.1, 0.1] },
+    { name: 'ASM-Loc',         cls: 's-asm',   v: [18.2, 14.6, 10.9, 7.0, 4.1, 2.3, 1.2, 0.3, 0.0] },
+    { name: 'HR-Pro',          cls: 's-hrpro', v: [30.6, 26.1, 19.2, 10.9, 6.7, 3.7, 1.2, 0.4, 0.1] },
+    { name: 'ActionFormer',    cls: 's-af',    v: [29.2, 28.2, 26.6, 25.4, 22.7, 19.0, 14.4, 8.6, 3.1] },
+    { name: 'FSH-TAL (ours)',  cls: 's-ours',  v: [55.5, 53.4, 51.3, 48.3, 44.0, 37.0, 28.2, 17.3, 6.4] }
   ];
 
-  // Per-behavior AP (%), IoU 0.1–0.7, with annotated events and recordings containing it
+  // Per-behavior AP (%), IoU 0.1–0.7, with annotated events and recordings
+  // containing it, from the paper's per-behavior table; sorted by AP
   var BEHAVIORS = [
-    { name: 'Tilt',   ap: 54.1, events: '594',   recs: 11, color: 'var(--c6)' },
-    { name: 'Peck',   ap: 48.8, events: '529',   recs: 11, color: 'var(--c4)' },
-    { name: 'Lead',   ap: 45.6, events: '1,455', recs: 16, color: 'var(--c3)' },
-    { name: 'Quiver', ap: 41.6, events: '1,262', recs: 17, color: 'var(--c5)' },
-    { name: 'Bite',   ap: 38.9, events: '3,516', recs: 15, color: 'var(--c1)' },
-    { name: 'Chase',  ap: 36.8, events: '846',   recs: 12, color: 'var(--c2)' }
+    { name: 'Tilt',   ap: 54.4, events: '594',   recs: 11, color: 'var(--c6)' },
+    { name: 'Lead',   ap: 51.1, events: '1,455', recs: 16, color: 'var(--c3)' },
+    { name: 'Peck',   ap: 50.3, events: '529',   recs: 11, color: 'var(--c4)' },
+    { name: 'Quiver', ap: 44.1, events: '1,262', recs: 17, color: 'var(--c5)' },
+    { name: 'Bite',   ap: 41.9, events: '3,516', recs: 15, color: 'var(--c1)' },
+    { name: 'Chase',  ap: 39.2, events: '846',   recs: 12, color: 'var(--c2)' }
   ];
 
   function buildMapChart(svg) {
@@ -367,11 +369,11 @@
       }
     });
     SERIES[5].v.forEach(function (v, i) {
-      var dot = delay(el(svg, 'circle', { cx: X(i), cy: Y(v), r: 5, class: 'dot pop' }), 1.5 + i * 0.14);
+      var dot = delay(el(svg, 'circle', { cx: X(i), cy: Y(v), r: 5, class: 'dot pop' }), 1.5 + i * 0.16);
       el(dot, 'title', {}, 'FSH-TAL, IoU ' + IOU[i].toFixed(1) + ': ' + v.toFixed(1) + '% mAP');
     });
-    delay(el(svg, 'text', { x: X(0) + 10, y: Y(53.3) - 12, class: 'dlabel ours pop' }, 'FSH-TAL (ours)'), 2.6);
-    delay(el(svg, 'text', { x: X(3) + 10, y: Y(29.8) - 12, class: 'dlabel pop' }, 'ActionFormer'), 1.3);
+    delay(el(svg, 'text', { x: X(0) + 10, y: Y(55.5) - 12, class: 'dlabel ours pop' }, 'FSH-TAL (ours)'), 2.6);
+    delay(el(svg, 'text', { x: X(2) + 10, y: Y(26.6) - 12, class: 'dlabel pop' }, 'ActionFormer'), 1.3);
   }
 
   function buildApChart(svg) {

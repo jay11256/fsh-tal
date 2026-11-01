@@ -75,8 +75,7 @@
         Cade McGeehan<sup>2</sup>,
         Tahir Haroon<sup>2</sup>,
         Vijay Jayasuriya<sup>1</sup>,
-        Ariel Bazan<sup>1</sup>,
-        Coltan G.&nbsp;Parker<sup>2</sup>,
+        Coltan Parker<sup>2</sup>,
         Scott Juntti<sup>2</sup>,
         <a target="_blank" href="https://www.cs.umd.edu/~pulkit/">Pulkit Kumar</a><sup>1</sup>,
         <a target="_blank" href="https://www.cs.umd.edu/~abhinav/">Abhinav Shrivastava</a><sup>1</sup>
@@ -103,8 +102,8 @@
       <h2 class="reveal">Behavioral experiments are limited by how fast experts can watch video.</h2>
       <ul class="points">
         <li class="reveal"><strong>Experts annotate at real-time playback,</strong> hour by hour, in BORIS.</li>
-        <li class="reveal"><strong>Four observers per recording,</strong> reconciled by inter-rater reliability.</li>
-        <li class="reveal"><strong>Each label is a single time point.</strong> No start, no end.</li>
+        <li class="reveal"><strong>Four observers for the dataset,</strong> reconciled by inter-rater reliability.</li>
+        <li class="reveal"><strong>Each label is a single time point.</strong> No start or end timestamps.</li>
       </ul>
       <dl class="stats reveal">
         <div><dt data-count="17">17</dt><dd>hour-long recordings</dd></div>
@@ -245,8 +244,8 @@
       <p class="eyebrow reveal">Results</p>
       <h2 class="reveal">State of the art at every IoU threshold over varied supervision.</h2>
       <p class="stat-label reveal">Average mAP, IoU 0.1&ndash;0.7</p>
-      <p class="headline-number reveal"><span data-count="42.8" data-decimals="1">42.8</span><small>%</small></p>
-      <p class="body-text reveal"><strong>+15.5 points</strong> over ActionFormer, fully supervised
+      <p class="headline-number reveal"><span data-count="45.4" data-decimals="1">45.4</span><small>%</small></p>
+      <p class="body-text reveal"><strong>+21.8 points</strong> over ActionFormer, fully supervised
         on the same pseudo-segments.</p>
       <p class="fineprint reveal">5-fold cross-validation over all 17 held-out recordings.</p>
     </div>
@@ -254,12 +253,12 @@
       <svg id="map-chart" viewBox="0 0 720 400" role="img"
            aria-label="Mean average precision versus IoU threshold for six methods; FSH-TAL is highest at every threshold"></svg>
       <figcaption class="legend" aria-hidden="true">
-        <span><svg viewBox="0 0 40 12"><line x1="2" y1="6" x2="38" y2="6" class="s-mil"/></svg>MIL classifier <b>10.5</b></span>
-        <span><svg viewBox="0 0 40 12"><line x1="2" y1="6" x2="38" y2="6" class="s-milpp"/></svg>MIL + post-processing <b>14.9</b></span>
-        <span><svg viewBox="0 0 40 12"><line x1="2" y1="6" x2="38" y2="6" class="s-asm"/></svg>ASM-Loc (weak) <b>12.4</b></span>
-        <span><svg viewBox="0 0 40 12"><line x1="2" y1="6" x2="38" y2="6" class="s-hrpro"/></svg>HR-Pro (point) <b>15.6</b></span>
-        <span><svg viewBox="0 0 40 12"><line x1="2" y1="6" x2="38" y2="6" class="s-af"/></svg>ActionFormer (full) <b>27.3</b></span>
-        <span class="ours"><svg viewBox="0 0 40 12"><line x1="2" y1="6" x2="38" y2="6" class="s-ours"/></svg>FSH-TAL (ours) <b>42.8</b></span>
+        <span><svg viewBox="0 0 40 12"><line x1="2" y1="6" x2="38" y2="6" class="s-mil"/></svg>MIL classifier <b>12.2</b></span>
+        <span><svg viewBox="0 0 40 12"><line x1="2" y1="6" x2="38" y2="6" class="s-milpp"/></svg>MIL + post-processing <b>16.0</b></span>
+        <span><svg viewBox="0 0 40 12"><line x1="2" y1="6" x2="38" y2="6" class="s-asm"/></svg>ASM-Loc (weak) <b>8.3</b></span>
+        <span><svg viewBox="0 0 40 12"><line x1="2" y1="6" x2="38" y2="6" class="s-hrpro"/></svg>HR-Pro (point) <b>14.1</b></span>
+        <span><svg viewBox="0 0 40 12"><line x1="2" y1="6" x2="38" y2="6" class="s-af"/></svg>ActionFormer (full) <b>23.6</b></span>
+        <span class="ours"><svg viewBox="0 0 40 12"><line x1="2" y1="6" x2="38" y2="6" class="s-ours"/></svg>FSH-TAL (ours) <b>45.4</b></span>
       </figcaption>
     </figure>
   </div>
@@ -271,13 +270,13 @@
       <p class="eyebrow reveal">Per-behavior average precision</p>
       <h2 class="reveal">Well-defined behaviors localize best, even when they are rare.</h2>
       <p class="body-text reveal">Precisely defined behaviors beat loosely defined ones:
-        <strong>Tilt</strong> and <strong>Peck</strong> are rare, yet localize best.</p>
+        <strong>Tilt</strong> and <strong>Peck</strong> are rare, yet among the best localized.</p>
       <p class="body-text reveal">FSH-TAL beats every baseline on all six behaviors.</p>
       <p class="fineprint reveal">IoU 0.1&ndash;0.7, over the recordings that contain each behavior.</p>
     </div>
     <figure class="media chart reveal">
       <svg id="ap-chart" viewBox="0 0 720 420" role="img"
-           aria-label="Average precision per behavior: Tilt 54.1, Peck 48.8, Lead 45.6, Quiver 41.6, Bite 38.9, Chase 36.8"></svg>
+           aria-label="Average precision per behavior: Tilt 54.4, Lead 51.1, Peck 50.3, Quiver 44.1, Bite 41.9, Chase 39.2"></svg>
     </figure>
   </div>
 </section>
@@ -317,12 +316,13 @@
         <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</p>
     </div>
     <figure class="media media-plain reveal">
-      <pre><code id="bibtex">@inproceedings{srinivasan2026automated,
-  title={Automated Temporal Localization of Behavior in Cichlid Fish with Few-Shot Trajectory Tokens},
-  author={Bhargav Srinivasan and William Lamousin and Jason Liu and Charles Phan and Ofure Osunbor and Cade McGeehan and Shubh Sharma and Tahir Haroon and Vijay Jayasuriya and Coltan G. Parker and Scott Juntti and Pulkit Kumar and Abhinav Shrivastava},
-  booktitle={Third Workshop on Computer Vision for Ecology},
-  year={2026},
-  url={https://openreview.net/forum?id=T4haB8tCOJ}
+      <pre><code id="bibtex">
+@inproceedings{srinivasan2027automated,
+  title = {Automated Temporal Localization of Behavior in Cichlid Fish with Few-Shot Trajectory Tokens},
+  author = {Srinivasan, Bhargav and Lamousin, William and Liu, Jason and Phan, Charles and Osunbor, Ofure and Sharma, Shubh and McGeehan, Cade and Haroon, Tahir and Jayasuriya, Vijay and Parker, Coltan and Juntti, Scott and Kumar, Pulkit and Shrivastava, Abhinav},
+  booktitle = {Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},
+  year = {2027},
+  note = {To appear}
 }</code></pre>
     </figure>
   </div>
