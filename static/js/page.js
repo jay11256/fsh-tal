@@ -65,6 +65,8 @@
     '00852', '02308', '02362', '02363', '02471', '02474', '04371', '07414', '08877', '08984'
   ];
   var MAX_TILES = 30;
+  var TILES_PER_FRAME = 3;    // players started per animation frame
+  var SEEK_EVENTS = ['canplaythrough', 'playing', 'timeupdate'];
 
   function buildWall(wall) {
     clearWall(wall);
@@ -74,7 +76,9 @@
     var rows = function () { return Math.ceil(h / (w / cols * 9 / 16)); };
     while (cols > 2 && cols * rows() > MAX_TILES) cols--;
     wall.style.setProperty('--cols', cols);
+    wall.style.visibility = '';
     var order = WALL_CLIPS.slice().sort(function () { return Math.random() - 0.5; });
+    var tiles = [];
     for (var i = 0, n = cols * rows(); i < n; i++) {
       var v = document.createElement('video');
       v.className = 'bg';
@@ -82,24 +86,45 @@
       v.loop = true;
       v.playsInline = true;
       v.setAttribute('playsinline', '');
-      v.src = './static/media/wall/clip_' + order[i % order.length] + '.mp4';
+      v.wallSrc = './static/media/wall/clip_' + order[i % order.length] + '.mp4';
       // seek only once the (small) clip is fully buffered: an earlier seek
       // can stall on servers without range requests, or be dropped mid-play()
       v.wallOffset = Math.random();
-      ['canplaythrough', 'playing', 'timeupdate'].forEach(function (type) {
-        v.addEventListener(type, seekToOffset);
-      });
-      wall.appendChild(v);
+      SEEK_EVENTS.forEach(function (type) { v.addEventListener(type, seekToOffset); });
+      tiles.push(v);
     }
+    // All tiles go in at once so the grid never reflows, but their players
+    // start a few per frame: creating ~30 decoders (and their first seeks) in
+    // one frame stalls the slide transition that is running at the same time.
+    tiles.forEach(function (v) { wall.appendChild(v); });
+    var run = wall.buildRun = (wall.buildRun || 0) + 1;
+    (function startSome() {
+      if (wall.buildRun !== run) return;
+      tiles.splice(0, TILES_PER_FRAME).forEach(function (v) {
+        v.src = v.wallSrc;
+        if (wall.closest('.slide') === activeSlide && !reduceMotion.matches && !document.hidden) {
+          var p = v.play();
+          if (p && p.catch) p.catch(function () {});
+        }
+      });
+      if (tiles.length) requestAnimationFrame(startSome);
+    })();
   }
 
   function seekToOffset() {
     if (this.seeded || this.readyState < 4 || !this.duration) return;
     this.currentTime = this.wallOffset * this.duration;
-    if (this.currentTime > 0.05 || this.wallOffset < 0.02) this.seeded = true;
+    if (this.currentTime > 0.05 || this.wallOffset < 0.02) {
+      this.seeded = true;
+      var v = this;
+      SEEK_EVENTS.forEach(function (type) { v.removeEventListener(type, seekToOffset); });
+    }
   }
 
   function clearWall(wall) {
+    clearTimeout(wall.clearTimer);
+    wall.clearTimer = null;
+    wall.buildRun = (wall.buildRun || 0) + 1;
     wall.querySelectorAll('video').forEach(function (v) {
       v.pause();
       v.removeAttribute('src');
@@ -108,12 +133,23 @@
     });
   }
 
+  // Leaving a wall's slide hides and pauses it at once (as removing it did),
+  // but releasing ~30 players is itself slow, so that waits until the slide
+  // transition has finished.
+  var WALL_CLEAR_DELAY = 1200;   // ms, longer than goTo's longest transition
+
   function updateWalls(slide) {
     document.querySelectorAll('.clip-wall').forEach(function (wall) {
       if (slide.contains(wall)) {
+        if (wall.clearTimer) clearWall(wall);   // rebuilt fresh, as before
         if (!wall.firstChild) buildWall(wall);
-      } else if (wall.firstChild) {
-        clearWall(wall);
+      } else if (wall.firstChild && !wall.clearTimer) {
+        wall.style.visibility = 'hidden';
+        wall.querySelectorAll('video').forEach(function (v) { v.pause(); });
+        wall.clearTimer = setTimeout(function () {
+          wall.clearTimer = null;
+          clearWall(wall);
+        }, WALL_CLEAR_DELAY);
       }
     });
   }
@@ -130,7 +166,8 @@
   // Clips in a [data-sync] row show the same moment through different stages,
   // so the others follow the first one whenever they drift apart.
   setInterval(function () {
-    document.querySelectorAll('[data-sync]').forEach(function (row) {
+    if (!activeSlide || document.hidden) return;
+    activeSlide.querySelectorAll('[data-sync]').forEach(function (row) {
       var vids = row.querySelectorAll('video');
       var master = vids[0];
       if (!master || master.paused) return;
@@ -141,6 +178,18 @@
       }
     });
   }, 250);
+
+  // Nothing plays in a background tab; coming back resumes the active slide's
+  // clips where they were.
+  document.addEventListener('visibilitychange', function () {
+    if (!activeSlide) return;
+    activeSlide.querySelectorAll('video').forEach(function (v) {
+      if (document.hidden) { v.pause(); return; }
+      if (!v.getAttribute('src') || (reduceMotion.matches && v.classList.contains('bg'))) return;
+      var p = v.play();
+      if (p && p.catch) p.catch(function () {});
+    });
+  });
 
   // ---------- Count-ups: [data-count] numbers tick up as they appear ----------
   function format(n, el) {

@@ -420,6 +420,8 @@ h2 {
   align-content: center;
   gap: 2px;
   overflow: hidden;
+  /* sized by inset, so its ~30 tiles can be laid out and painted in isolation */
+  contain: strict;
   opacity: 0;
   transition: opacity 0.4s;
 }
