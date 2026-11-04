@@ -453,6 +453,24 @@ h2 {
   max-width: 1150px;
 }
 
+/* the title sits in the middle of the page, over an even, centered shade */
+#top {
+  align-items: center;
+}
+
+#top .shade {
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.88) 100%);
+}
+
+#top .copy {
+  margin: 0 auto;
+  text-align: center;
+}
+
+#top .actions {
+  justify-content: center;
+}
+
 #top .eyebrow {
   color: #ffd200;
 }
