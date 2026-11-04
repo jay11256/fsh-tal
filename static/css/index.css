@@ -454,9 +454,13 @@ h2 {
   max-width: 1150px;
 }
 
-/* the title sits in the middle of the page */
+/* the title sits in the middle of the page, over an even (not graded) shade */
 #top {
   align-items: center;
+}
+
+#top .shade {
+  background: rgba(0, 0, 0, 0.2);
 }
 
 #top .copy {
