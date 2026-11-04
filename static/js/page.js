@@ -374,18 +374,18 @@
     { name: 'ASM-Loc',         cls: 's-asm',   v: [18.2, 14.6, 10.9, 7.0, 4.1, 2.3, 1.2, 0.3, 0.0] },
     { name: 'HR-Pro',          cls: 's-hrpro', v: [30.6, 26.1, 19.2, 10.9, 6.7, 3.7, 1.2, 0.4, 0.1] },
     { name: 'ActionFormer',    cls: 's-af',    v: [29.2, 28.2, 26.6, 25.4, 22.7, 19.0, 14.4, 8.6, 3.1] },
-    { name: 'FSH-TAL (ours)',  cls: 's-ours',  v: [55.5, 53.4, 51.3, 48.3, 44.0, 37.0, 28.2, 17.3, 6.4] }
+    { name: 'FSH-TAL (ours)',  cls: 's-ours',  v: [51.7, 49.3, 47.0, 43.2, 38.7, 32.8, 24.1, 13.7, 3.9] }
   ];
 
   // Per-behavior AP (%), IoU 0.1–0.7, with annotated events and recordings
   // containing it, from the paper's per-behavior table; sorted by AP
   var BEHAVIORS = [
-    { name: 'Tilt',   ap: 54.4, events: '594',   recs: 11, color: 'var(--c6)' },
-    { name: 'Lead',   ap: 51.1, events: '1,455', recs: 16, color: 'var(--c3)' },
-    { name: 'Peck',   ap: 50.3, events: '529',   recs: 11, color: 'var(--c4)' },
-    { name: 'Quiver', ap: 44.1, events: '1,262', recs: 17, color: 'var(--c5)' },
-    { name: 'Bite',   ap: 41.9, events: '3,516', recs: 15, color: 'var(--c1)' },
-    { name: 'Chase',  ap: 39.2, events: '846',   recs: 12, color: 'var(--c2)' }
+    { name: 'Tilt',   ap: 49.4, events: '594',   recs: 11, color: 'var(--c6)' },
+    { name: 'Peck',   ap: 48.3, events: '529',   recs: 11, color: 'var(--c4)' },
+    { name: 'Lead',   ap: 43.4, events: '1,455', recs: 16, color: 'var(--c3)' },
+    { name: 'Quiver', ap: 42.6, events: '1,262', recs: 17, color: 'var(--c5)' },
+    { name: 'Bite',   ap: 35.9, events: '3,516', recs: 15, color: 'var(--c1)' },
+    { name: 'Chase',  ap: 35.2, events: '846',   recs: 12, color: 'var(--c2)' }
   ];
 
   function buildMapChart(svg) {
@@ -421,7 +421,7 @@
       var dot = delay(el(svg, 'circle', { cx: X(i), cy: Y(v), r: 5, class: 'dot pop' }), 1.5 + i * 0.16);
       el(dot, 'title', {}, 'FSH-TAL, IoU ' + IOU[i].toFixed(1) + ': ' + v.toFixed(1) + '% mAP');
     });
-    delay(el(svg, 'text', { x: X(0) + 10, y: Y(55.5) - 12, class: 'dlabel ours pop' }, 'FSH-TAL (ours)'), 2.6);
+    delay(el(svg, 'text', { x: X(0) + 10, y: Y(51.7) - 12, class: 'dlabel ours pop' }, 'FSH-TAL (ours)'), 2.6);
     delay(el(svg, 'text', { x: X(2) + 10, y: Y(26.6) - 12, class: 'dlabel pop' }, 'ActionFormer'), 1.3);
   }
 
