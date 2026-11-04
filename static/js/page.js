@@ -56,7 +56,8 @@
   }
 
   // ---------- Clip walls (title and links slides) ----------
-  // Raw dataset clips (static/media/wall/, 480×270 copies) tiled across the
+  // Dataset clips (static/media/wall/, 480×270 copies; the title wall uses the
+  // SAM3-mask versions, the links wall the raw ones) tiled across the
   // slide in a random order, each started at a random point in its loop. Browsers cap how many video players a page may
   // hold (~75 desktop, fewer on phones), so a wall only exists while its slide
   // is active, with about 30 tiles at most.
@@ -77,6 +78,8 @@
     while (cols > 2 && cols * rows() > MAX_TILES) cols--;
     wall.style.setProperty('--cols', cols);
     wall.style.visibility = '';
+    // data-view="masks" picks the SAM3-mask copies (clip_<id>_masks.mp4)
+    var suffix = wall.dataset.view ? '_' + wall.dataset.view : '';
     var order = WALL_CLIPS.slice().sort(function () { return Math.random() - 0.5; });
     var tiles = [];
     for (var i = 0, n = cols * rows(); i < n; i++) {
@@ -86,7 +89,7 @@
       v.loop = true;
       v.playsInline = true;
       v.setAttribute('playsinline', '');
-      v.wallSrc = './static/media/wall/clip_' + order[i % order.length] + '.mp4';
+      v.wallSrc = './static/media/wall/clip_' + order[i % order.length] + suffix + '.mp4';
       // seek only once the (small) clip is fully buffered: an earlier seek
       // can stall on servers without range requests, or be dropped mid-play()
       v.wallOffset = Math.random();
