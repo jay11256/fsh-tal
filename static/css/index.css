@@ -191,6 +191,7 @@ a:hover {
 
 .media img {
   width: 100%;
+  height: auto;   /* not the height attribute, which only reserves the aspect ratio */
   max-height: var(--media-h);
   object-fit: contain;
 }
@@ -1039,6 +1040,22 @@ pre {
   .behavior-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  /* Tracking turns sideways like the Dataset grid: Lead and Chase become the
+     two columns, and each stage's title sits above its row of clips */
+  .pipeline {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px 14px;
+  }
+
+  .pipeline > p { grid-column: 1 / -1; }
+  .pipeline > p:nth-of-type(2) { grid-row: 3; margin-top: 10px; }
+  .pipeline > p:nth-of-type(3) { grid-row: 5; margin-top: 10px; }
+  .pipeline .sync-row:first-of-type .clip { grid-column: 1; }
+  .pipeline .sync-row:last-of-type .clip { grid-column: 2; }
+  .pipeline .clip:nth-child(1) { grid-row: 2; }
+  .pipeline .clip:nth-child(2) { grid-row: 4; }
+  .pipeline .clip:nth-child(3) { grid-row: 6; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -18,7 +18,7 @@ then open `http://localhost:8000`. `http.server` doesn't answer HTTP range reque
 - `static/css/index.css` — all styles; Apple palette and type tokens on `:root`.
 - `static/js/page.js` — active-slide tracking, paging, video playback, count-ups, the two results charts (built as SVG from data arrays at the top of the Charts section), the Dataset raw/masks/tracks switch, and copy-BibTeX.
 - `static/media/` — copied from the teaser's `media/` folder: `beh_<behavior>_{raw,masks,tracks}.mp4` for all six behaviors, `stage_raw.mp4`, and `architecture.webp`. The Dataset switch builds `beh_<data-behavior>_<view>.mp4` paths, so keep that naming.
-- `static/images/` (GIFs, PNG figures, `wacv_logo.jpeg`, `teaser.png`) is no longer referenced by the page.
+- `static/images/` (GIFs, PNG figures, `wacv_logo.jpeg`) is no longer shown on the page, except `teaser.png`, which is the link-preview image (`og:image` / `twitter:image` in the `<head>`). Those tags use absolute URLs on the deployed site, `https://jay11256.github.io/fsh-tal/`, so update them if the site moves.
 - `static/css/bulma.min.css`, `static/css/fontawesome.*`, `static/js/fontawesome.*` are leftovers from the original Nerfies template and are not loaded by the page. The two icons the page uses (Font Awesome `file-pdf` and `github`) are inlined as `<symbol>`s at the top of `<body>` and referenced with `<use href="#icon-…">`; Data/Models use the 🤗 emoji.
 - The Paper/Code/Data/Models links appear twice, on the title slide and in the nav bar's `.globalnav-actions`, so keep both copies in sync. Below 1180px the nav's section links hide to make room for the buttons, and below 520px the "FSH-TAL" brand hides too.
 
